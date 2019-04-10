@@ -26,7 +26,7 @@ import {
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import styles from './equipment.less';
+import styles from './student.less';
 const FormItem = Form.Item;
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -41,16 +41,6 @@ const columns = [{
   align: 'center',
   render: text => <a href="javascript:;">{text}</a>,
 }, {
-  title: '服务器Id',
-  dataIndex: 'cpu',
-  key: 'cpu',
-  align: 'center',
-},{
-  title: 'cpu核数',
-  dataIndex: 'cpu',
-  key: 'cpu',
-  align: 'center',
-},{
   title: 'cpu使用率',
   dataIndex: 'cpu',
   key: 'cpu',

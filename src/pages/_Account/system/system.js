@@ -26,7 +26,7 @@ import {
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import styles from './equipment.less';
+import styles from './system.less';
 const FormItem = Form.Item;
 const { Step } = Steps;
 const { TextArea } = Input;
@@ -35,66 +35,42 @@ const RadioGroup = Radio.Group;
 
 
 const columns = [{
-  title: '设备名称',
+  title: '姓名',
   dataIndex: 'name',
   key: 'name',
   align: 'center',
   render: text => <a href="javascript:;">{text}</a>,
 }, {
-  title: '服务器Id',
-  dataIndex: 'cpu',
-  key: 'cpu',
-  align: 'center',
-},{
-  title: 'cpu核数',
-  dataIndex: 'cpu',
-  key: 'cpu',
-  align: 'center',
-},{
-  title: 'cpu使用率',
+  title: '主目录',
   dataIndex: 'cpu',
   key: 'cpu',
   align: 'center',
 }, {
-  title: '内存使用率',
+  title: '用户组',
   dataIndex: 'storage',
   key: 'storage',
   align: 'center',
-}, {
-  title: '磁盘使用率',
-  dataIndex: 'disk',
-  key: 'disk',
-  align: 'center',
-}, {
-  title: '软件数量',
-  dataIndex: 'software',
-  key: 'software',
-  align: 'center',
-}, {
+},{
   title: '状态',
   key: 'status',
   dataIndex: 'status',
   align: 'center',
   render: (cell, row) => (
     <span>
-      {(parseInt(row.cpu, 10) >= 80 || parseInt(row.storage, 10) >= 80 || parseInt(row.disk, 10) >= 80) ? <Tag color='red' key='1'>危险</Tag> : null}
-      {((parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80)) ? <Tag color='orange'>警告</Tag> : null}
-      {(parseInt(row.cpu, 10) < 60 && parseInt(row.storage, 10) < 60 && parseInt(row.disk, 10) < 60) ? <Tag color='blue'>正常</Tag> : null}
+      {(parseInt(row.cpu, 10) >= 80 || parseInt(row.storage, 10) >= 80 || parseInt(row.disk, 10) >= 80) ? <Tag color='red' key='1'>离线</Tag> : null}
+      {((parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80)) ? <Tag color='orange'>离线</Tag> : null}
+      {(parseInt(row.cpu, 10) < 60 && parseInt(row.storage, 10) < 60 && parseInt(row.disk, 10) < 60) ? <Tag color='blue'>登陆中</Tag> : null}
     </span>
   ),
-}, {
+},{
   title: '操作',
   key: 'action',
   align: 'center',
   render: (text, record) => (
     <span>
-      <a href="javascript:;">cpu详情</a>
+      <a href="javascript:;">删除</a>
       <Divider type="vertical" />
-      <a href="javascript:;">内存详情</a>
-      <Divider type="vertical" />
-      <a href="javascript:;">磁盘详情</a>
-      <Divider type="vertical" />
-      <a href="javascript:;">软件详情</a>
+      <a href="javascript:;">修改</a>
     </span>
   ),
 }]
@@ -110,12 +86,12 @@ class Equipment extends React.Component {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="设备名称">
+            <FormItem label="姓名">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="使用状态">
+            <FormItem label="用户组">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="0">正常</Option>
@@ -131,7 +107,10 @@ class Equipment extends React.Component {
                 查询
               </Button>
               <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
-               新建设备
+               新建管理员
+              </Button>
+              <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
+               批量新建
               </Button>
             </span>
           </Col>

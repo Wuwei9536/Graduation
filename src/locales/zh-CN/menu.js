@@ -33,7 +33,7 @@ export default {
   'menu.exception.not-find': '404',
   'menu.exception.server-error': '500',
   'menu.exception.trigger': '触发错误',
-  'menu.account': '个人页',
+  // 'menu.account': '个人页',
   'menu.account.center': '个人中心',
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
@@ -44,4 +44,14 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   //
   'menu.dashboard.equipment': '设备管理',
+  'menu.dashboard.cpu': 'CPU管理',
+  'menu.dashboard.storage': '内存管理',
+  'menu.dashboard.disk': '磁盘管理',
+  'menu.dashboard.software': '软件管理',
+  'menu.account': '用户管理',
+  'menu.account.system': '系统用户管理',
+  'menu.account.student': '学生用户管理',
+  'menu.individual': '个人中心',
+  'menu.individual.info': '个人信息设置',
+  'menu.individual.password': '密码设置',
 };

@@ -34,7 +34,83 @@ export default [
             name: 'equipment',
             component: './_Dashboard/equipment/equipment.js',
           },
+          {
+            path: '/dashboard/cpu',
+            name: 'cpu',
+            component: './_Dashboard/cpu/cpu.js',
+          },
+          {
+            path: '/dashboard/storage',
+            name: 'storage',
+            component: './_Dashboard/storage/storage.js',
+          },
+          {
+            path: '/dashboard/disk',
+            name: 'disk',
+            component: './_Dashboard/disk/disk.js',
+          },
+          {
+            path: '/dashboard/software',
+            name: 'software',
+            component: './_Dashboard/equipment/equipment.js',
+          },
         ],
+      },
+      {
+        path: '/account',
+        name: 'account',
+        icon: 'user',
+        routes: [
+          {
+            path: '/account/system',
+            name: 'system',
+            component: './_Account/system/system.js',
+          },
+          {
+            path: '/account/student',
+            name: 'student',
+            component: './_Account/student/student.js',
+          },
+        ]
+      },
+      {
+        path: '/individual',
+        name: 'individual',
+        icon: 'check-circle-o',
+        routes: [
+          {
+            path: '/individual/info',
+            name: 'info',
+            component: './_Individual/Settings/Info',
+            routes: [
+              {
+                path: '/individual/info',
+                redirect: '/individual/info/base',
+              },
+              {
+                path: '/individual/info/base',
+                component: './_Individual/Settings/BaseView',
+              },
+              {
+                path: '/individual/info/security',
+                component: './_Individual/Settings/SecurityView',
+              },
+              {
+                path: '/individual/info/binding',
+                component: './_Individual/Settings/BindingView',
+              },
+              {
+                path: '/individual/info/notification',
+                component: './_Individual/Settings/NotificationView',
+              },
+            ],
+          },
+          {
+            path: '/individual/password',
+            name: 'password',
+            component: './_Dashboard/equipment/equipment.js',
+          },
+        ]
       },
       // dashboard
       // { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
