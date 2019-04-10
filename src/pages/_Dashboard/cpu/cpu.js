@@ -59,18 +59,30 @@ const columns = [{
     ),
 }]
 
+const menu = (
+    <Menu>
+      <Menu.Item key="1"><Icon type="user" />1st menu item</Menu.Item>
+      <Menu.Item key="2"><Icon type="user" />2nd menu item</Menu.Item>
+      <Menu.Item key="3"><Icon type="user" />3rd item</Menu.Item>
+    </Menu>
+  );
+
 class Cpu extends React.Component {
     render() {
         const { data } = this.props;
         return (
             <Card>
+                <Dropdown overlay={menu}>
+                    <Button style={{ marginLeft: 8 }}>
+                        a设备 <Icon type="down" />
+                    </Button>
+                </Dropdown>
                 <TimelineChart
-                    height={200}
                     data={chartData}
                     titleMap={{ y1: 'cpu使用率' }}
                 />
                 <div className={style.tableWaterWave}>
-                    <div style={{textAlign:'center'}}>
+                    <div style={{ textAlign: 'center' }}>
                         <WaterWave
                             height={261}
                             title="cpu容量剩余"

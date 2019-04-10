@@ -65,7 +65,6 @@ class Cpu extends React.Component {
         return (
             <Card>
                 <TimelineChart
-                    height={200}
                     data={chartData}
                     titleMap={{ y1: '内存使用率' }}
                 />
