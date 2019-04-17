@@ -1,7 +1,6 @@
-import React, { PureComponent, Fragment } from 'react';
+import React from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
-import router from 'umi/router';
+// import router from 'umi/router';
 import {
   Row,
   Col,
@@ -9,29 +8,15 @@ import {
   Form,
   Input,
   Select,
-  Icon,
   Button,
-  Dropdown,
-  Menu,
-  InputNumber,
-  DatePicker,
-  Modal,
-  message,
-  Badge,
   Divider,
-  Steps,
-  Radio,
   Table,
   Tag
 } from 'antd';
-import StandardTable from '@/components/StandardTable';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './equipment.less';
+
 const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
 const { Option } = Select;
-const RadioGroup = Radio.Group;
 
 
 const columns = [{
@@ -39,18 +24,23 @@ const columns = [{
   dataIndex: 'name',
   key: 'name',
   align: 'center',
-  render: text => <a href="javascript:;">{text}</a>,
+  // render: text => <a href="javascript:;">{text}</a>,
 }, {
-  title: '服务器Id',
-  dataIndex: 'cpu',
-  key: 'cpu',
+  title: 'ip地址',
+  dataIndex: 'ip',
+  key: 'ip',
   align: 'center',
-},{
-  title: 'cpu核数',
-  dataIndex: 'cpu',
-  key: 'cpu',
+}, {
+  title: '服务器类型',
+  dataIndex: 'type',
+  key: 'type',
   align: 'center',
-},{
+}, {
+  title: 'cpu型号',
+  dataIndex: 'model',
+  key: 'model',
+  align: 'center',
+}, {
   title: 'cpu使用率',
   dataIndex: 'cpu',
   key: 'cpu',
@@ -71,6 +61,11 @@ const columns = [{
   key: 'software',
   align: 'center',
 }, {
+  title: '是否安装agent',
+  dataIndex: 'agent',
+  key: 'agent',
+  align: 'center',
+}, {
   title: '状态',
   key: 'status',
   dataIndex: 'status',
@@ -83,18 +78,18 @@ const columns = [{
     </span>
   ),
 }, {
-  title: '操作',
+  title: '查看详情',
   key: 'action',
   align: 'center',
-  render: (text, record) => (
+  render: () => (
     <span>
-      <a href="javascript:;">cpu详情</a>
+      <a href="http://localhost:8000/dashboard/cpu">cpu</a>
       <Divider type="vertical" />
-      <a href="javascript:;">内存详情</a>
+      <a href="http://localhost:8000/dashboard/cpu">内存</a>
       <Divider type="vertical" />
-      <a href="javascript:;">磁盘详情</a>
+      <a href="http://localhost:8000/">磁盘</a>
       <Divider type="vertical" />
-      <a href="javascript:;">软件详情</a>
+      <a href="http://localhost:8000/">软件</a>
     </span>
   ),
 }]
@@ -102,6 +97,24 @@ const columns = [{
 @Form.create()
 class Equipment extends React.Component {
 
+  // 拉取数据
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'equipment/fetchEquipmentData'
+    })
+  }
+
+  fetchEquipmentData = () => {
+    const { dispatch, form } = this.props;
+    const payload = form.getFieldsValue();
+    dispatch({
+      type: 'equipment/fetchEquipmentData',
+      payload
+    })
+  }
+
+  // 表格渲染
   renderForm() {
     const {
       form: { getFieldDecorator },
@@ -127,11 +140,11 @@ class Equipment extends React.Component {
           </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" onClick={this.fetchEquipmentData}>
                 查询
               </Button>
               <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
-               新建设备
+                新建设备
               </Button>
             </span>
           </Col>
@@ -156,7 +169,6 @@ class Equipment extends React.Component {
 
 const mapStateToProps = ({ equipment }) => ({
   data: equipment.data,
-  columns: equipment.columns
 });
 
 export default connect(mapStateToProps)(Equipment);

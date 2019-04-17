@@ -24,8 +24,6 @@ import {
   Table,
   Tag
 } from 'antd';
-import StandardTable from '@/components/StandardTable';
-import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './student.less';
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -39,28 +37,27 @@ const columns = [{
   dataIndex: 'name',
   key: 'name',
   align: 'center',
-  render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: '学院',
-  dataIndex: 'cpu',
-  key: 'cpu',
+  dataIndex: 'academy',
+  key: 'academy',
   align: 'center',
 }, {
   title: '班级',
-  dataIndex: 'storage',
-  key: 'storage',
+  dataIndex: 'class',
+  key: 'class',
   align: 'center',
 }, {
   title: '学号',
-  dataIndex: 'disk',
-  key: 'disk',
+  dataIndex: 'number',
+  key: 'number',
   align: 'center',
 }, {
   title: '归属老师',
-  dataIndex: 'software',
-  key: 'software',
+  dataIndex: 'teacher',
+  key: 'teacher',
   align: 'center',
-},  {
+}, {
   title: '操作',
   key: 'action',
   align: 'center',
@@ -74,7 +71,15 @@ const columns = [{
 }]
 
 @Form.create()
-class Equipment extends React.Component {
+class Student extends React.Component {
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type:'student/fetchStudentData',
+      payload:1
+    })
+  }
 
   renderForm() {
     const {
@@ -105,10 +110,10 @@ class Equipment extends React.Component {
                 查询
               </Button>
               <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
-               新建学生
+                新建学生
               </Button>
               <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
-               批量新建
+                批量新建
               </Button>
             </span>
           </Col>
@@ -131,9 +136,8 @@ class Equipment extends React.Component {
   }
 }
 
-const mapStateToProps = ({ equipment }) => ({
-  data: equipment.data,
-  columns: equipment.columns
+const mapStateToProps = ({ student }) => ({
+  data: student.data,
 });
 
-export default connect(mapStateToProps)(Equipment);
+export default connect(mapStateToProps)(Student);

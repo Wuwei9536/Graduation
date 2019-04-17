@@ -105,11 +105,6 @@ export default [
               },
             ],
           },
-          {
-            path: '/individual/password',
-            name: 'password',
-            component: './_Dashboard/equipment/equipment.js',
-          },
         ]
       },
       // dashboard

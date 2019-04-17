@@ -42,13 +42,13 @@ const columns = [{
   render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: '主目录',
-  dataIndex: 'cpu',
-  key: 'cpu',
+  dataIndex: 'catalogue',
+  key: 'catalogue',
   align: 'center',
 }, {
   title: '用户组',
-  dataIndex: 'storage',
-  key: 'storage',
+  dataIndex: 'group',
+  key: 'group',
   align: 'center',
 },{
   title: '状态',
@@ -76,7 +76,11 @@ const columns = [{
 }]
 
 @Form.create()
-class Equipment extends React.Component {
+class System extends React.Component {
+
+  componentDidMount(){
+    // const { d}
+  }
 
   renderForm() {
     const {
@@ -133,9 +137,9 @@ class Equipment extends React.Component {
   }
 }
 
-const mapStateToProps = ({ equipment }) => ({
-  data: equipment.data,
-  columns: equipment.columns
+const mapStateToProps = ({ system }) => ({
+  data: system.data,
+  columns: system.columns
 });
 
-export default connect(mapStateToProps)(Equipment);
+export default connect(mapStateToProps)(System);

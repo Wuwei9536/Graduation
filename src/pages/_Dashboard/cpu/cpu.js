@@ -22,24 +22,31 @@ import {
     Table,
     Tag
 } from 'antd';
-import { TimelineChart, Pie, WaterWave } from '@/components/Charts';
-import style from './cpu.less'
+import {
+    G2,
+    Chart,
+    Geom,
+    Axis,
+    Tooltip,
+    Coord,
+    Label,
+    Legend,
+    View,
+    Guide,
+    Shape,
+    Facet,
+    Util
+} from "bizcharts";
+import { TimelineChart, WaterWave } from '@/components/Charts';
+import style from './cpu.less';
 
-const chartData = [];
-for (let i = 0; i < 20; i += 1) {
-    chartData.push({
-        x: (new Date().getTime()) + (1000 * 60 * 30 * i),
-        y1: Math.floor(Math.random() * 100) + 1000,
-        // y2: Math.floor(Math.random() * 100) + 10,
-    });
-}
 
 const columns = [{
     title: '时间点',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'time',
+    key: 'time',
     align: 'center',
-    render: text => <a href="javascript:;">{text}</a>,
+    // render: text => <a href="javascript:;">{text}</a>,
 }, {
     title: 'cpu使用率',
     dataIndex: 'cpu',
@@ -59,28 +66,70 @@ const columns = [{
     ),
 }]
 
-const menu = (
-    <Menu>
-      <Menu.Item key="1"><Icon type="user" />1st menu item</Menu.Item>
-      <Menu.Item key="2"><Icon type="user" />2nd menu item</Menu.Item>
-      <Menu.Item key="3"><Icon type="user" />3rd item</Menu.Item>
-    </Menu>
-  );
+const menuData = [
+    {name:'a'},
+    {name:'b'}
+]
+
+
+const cols = {
+    cpu: {
+        min: 0
+    },
+    time: {
+        type: 'time',
+        mask: 'HH:mm:ss',
+        tickCount: 6,
+    }
+};
 
 class Cpu extends React.Component {
+
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'cpu/fetchCpuData',
+            payload: 1
+        })
+    }
+
+    menu = (menuData) => {
+        return (
+            <Menu>
+                {menuData.map((item,index) => <Menu.Item key={index}><Icon type="user" />{item.name}</Menu.Item>)}
+            </Menu>
+        )
+    }
+
     render() {
         const { data } = this.props;
         return (
             <Card>
-                <Dropdown overlay={menu}>
+                <Dropdown overlay={this.menu(menuData)}>
                     <Button style={{ marginLeft: 8 }}>
                         a设备 <Icon type="down" />
                     </Button>
                 </Dropdown>
-                <TimelineChart
-                    data={chartData}
-                    titleMap={{ y1: 'cpu使用率' }}
-                />
+                <div>
+                    <Chart height={400} data={data} scale={cols} forceFit>
+                        <Axis name="time" />
+                        <Axis
+                            name="cpu"
+                            label={{
+                                formatter: val => {
+                                    return val * 10 + '%';
+                                }
+                            }}
+                        />
+                        <Tooltip
+                            crosshairs={{
+                                type: "line"
+                            }}
+                        />
+                        <Geom type="area" position="time*cpu" />
+                        <Geom type="line" position="time*cpu" size={2} />
+                    </Chart>
+                </div>
                 <div className={style.tableWaterWave}>
                     <div style={{ textAlign: 'center' }}>
                         <WaterWave
@@ -91,11 +140,12 @@ class Cpu extends React.Component {
                         />
                     </div>
                     <Table columns={columns} dataSource={data} pagination={{ pageSize: 6 }} className={style.table} />
-
                 </div>
             </Card>
         )
     }
+
+
 }
 
 const mapStateToProps = ({ cpu }) => ({

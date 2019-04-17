@@ -104,10 +104,34 @@ export async function updateFakeList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
-  });
+  return request(`/api/systemuser?${stringify(params)}`);
+  // const { password, userName, type } = params;
+  // console.log('%ctype: ', 'font-size:15px;background-color: rgb(135, 208, 104);', type);
+  // if (password === 'root' && userName === 'admin') {
+  //   return{
+  //     status: 'ok',
+  //     type,
+  //     currentAuthority: 'admin',
+  //   };
+  //   // return;
+  // }
+  // if (password === 'root' && userName === 'user') {
+  //   return{
+  //     status: 'ok',
+  //     type,
+  //     currentAuthority: 'user',
+  //   }
+  // }
+  // return{
+  //   status: 'error',
+  //   type,
+  //   currentAuthority: 'guest',
+  // };
+
+  // return request('/api/login/account', {
+  //   method: 'POST',
+  //   data: params,
+  // });
 }
 
 export async function fakeRegister(params) {
@@ -123,4 +147,84 @@ export async function queryNotices(params = {}) {
 
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
+}
+
+// ----------------------
+
+export async function fetchEquipmentData() {
+  return {
+    data: [{
+      key: '1',
+      name: 'John Brown',
+      ip: "0.0.0.0",
+      type: "类型名称",
+      model: "89-1",
+      cpu: '88%',
+      storage: 32,
+      disk: 32,
+      software: 1,
+      agent: "shi"
+    }, {
+      key: '2',
+      name: 'John Brown',
+      ip: "0.0.0.0",
+      type: "类型名称",
+      model: "89-1",
+      cpu: '88%',
+      storage: 32,
+      disk: 32,
+      software: 1,
+      agent: "shi"
+    }]
+  }
+}
+
+export async function fetchCpuData() {
+  return {
+    data: [{
+      key: '1',
+      time: 1555465811009,
+      cpu: 0.3
+    }, {
+      key: '2',
+      time: 1555472570301,
+      cpu: 0.4
+    }, {
+      key: '3',
+      time: 1555474570301,
+      cpu: 0.4
+    }, {
+      key: '4',
+      time: 1555475570301,
+      cpu: 0.4
+    }, {
+      key: '5',
+      time: 1555486570301,
+      cpu: 0.4
+    }]
+  }
+}
+
+export async function fetchStudentData() {
+  return {
+    data: [{
+      key: '1',
+      name: 'John Brown',
+      academy: '88%',
+      class: 32,
+      number: 32,
+      teacher: "s",
+    }],
+  }
+}
+
+export async function fetchSystemData() {
+  return {
+    data: [{
+      key: '1',
+      name: 'John Brown',
+      catalogue: '12%',
+      group: 32,
+    }],
+  }
 }

@@ -1,89 +1,34 @@
+import { fetchSystemData } from '@/services/api';
+
 export default {
-  namespace: 'equipment',
+  namespace: 'system',
 
   state: {
      data : [{
       key: '1',
       name: 'John Brown',
-      cpu: '12%',
-      storage: 32,
-      disk: 32,
-      software:1,
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      cpu: 60,
-      storage: 32,
-      disk: 32,
-      software:1,
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '4',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '5',
-      name: 'Joe Black',
-      cpu: 6,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '6',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '7',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '8',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '9',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '10',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
-    },{
-      key: '11',
-      name: 'Joe Black',
-      cpu: 69,
-      storage: 32,
-      disk: 32,
-      software:1,
+      catalogue: '12%',
+      group: 32,
     }],
 
   },
 
-  effects: {},
+  effects: {
+    *fetchSystemData({ payload }, { call, put }) {
+      const response = yield call(fetchSystemData, payload);
+      yield put({
+        type: 'setSystemData',
+        payload:response.data
+      });
+    },
+  },
 
-  reducers: {},
+  reducers: {
+    setSystemData(state, { payload }) {
+      return {
+        ...state,
+        data: payload
+      };
+    },
+  },
 };
