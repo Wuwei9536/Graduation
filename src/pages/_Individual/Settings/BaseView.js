@@ -11,23 +11,23 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 // 头像组件 方便以后独立，增加裁剪之类的功能
-const AvatarView = ({ avatar }) => (
-  <Fragment>
-    <div className={styles.avatar_title}>
-      <FormattedMessage id="app.settings.basic.avatar" defaultMessage="Avatar" />
-    </div>
-    <div className={styles.avatar}>
-      <img src={avatar} alt="avatar" />
-    </div>
-    <Upload fileList={[]}>
-      <div className={styles.button_view}>
-        <Button icon="upload">
-          <FormattedMessage id="app.settings.basic.change-avatar" defaultMessage="Change avatar" />
-        </Button>
-      </div>
-    </Upload>
-  </Fragment>
-);
+// const AvatarView = ({ avatar }) => (
+//   <Fragment>
+//     <div className={styles.avatar_title}>
+//       <FormattedMessage id="app.settings.basic.avatar" defaultMessage="Avatar" />
+//     </div>
+//     <div className={styles.avatar}>
+//       <img src={avatar} alt="avatar" />
+//     </div>
+//     <Upload fileList={[]}>
+//       <div className={styles.button_view}>
+//         <Button icon="upload">
+//           <FormattedMessage id="app.settings.basic.change-avatar" defaultMessage="Change avatar" />
+//         </Button>
+//       </div>
+//     </Upload>
+//   </Fragment>
+// );
 
 const validatorGeographic = (rule, value, callback) => {
   const { province, city } = value;
@@ -90,8 +90,8 @@ class BaseView extends Component {
       <div className={styles.baseView} ref={this.getViewDom}>
         <div className={styles.left}>
           <Form layout="vertical" onSubmit={this.handleSubmit} hideRequiredMark>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.email' })}>
-              {getFieldDecorator('email', {
+            <FormItem label={formatMessage({ id: 'app.settings.basic.name' })}>
+              {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
@@ -100,8 +100,8 @@ class BaseView extends Component {
                 ],
               })(<Input />)}
             </FormItem>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.nickname' })}>
-              {getFieldDecorator('name', {
+            <FormItem label={formatMessage({ id: 'app.settings.basic.academy' })}>
+              {getFieldDecorator('academy', {
                 rules: [
                   {
                     required: true,
@@ -110,54 +110,22 @@ class BaseView extends Component {
                 ],
               })(<Input />)}
             </FormItem>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.profile' })}>
-              {getFieldDecorator('profile', {
+            <FormItem label={formatMessage({ id: 'app.settings.basic.classGrade' })}>
+              {getFieldDecorator('calssGrade', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'app.settings.basic.profile-message' }, {}),
+                    message: formatMessage({ id: 'app.settings.basic.nickname-message' }, {}),
                   },
                 ],
-              })(
-                <Input.TextArea
-                  placeholder={formatMessage({ id: 'app.settings.basic.profile-placeholder' })}
-                  rows={4}
-                />
-              )}
+              })(<Input />)}
             </FormItem>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.country' })}>
-              {getFieldDecorator('country', {
+            <FormItem label={formatMessage({ id: 'app.settings.basic.stuNum' })}>
+              {getFieldDecorator('stuNum', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'app.settings.basic.country-message' }, {}),
-                  },
-                ],
-              })(
-                <Select style={{ maxWidth: 220 }}>
-                  <Option value="China">中国</Option>
-                </Select>
-              )}
-            </FormItem>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.geographic' })}>
-              {getFieldDecorator('geographic', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'app.settings.basic.geographic-message' }, {}),
-                  },
-                  {
-                    validator: validatorGeographic,
-                  },
-                ],
-              })(<GeographicView />)}
-            </FormItem>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.address' })}>
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'app.settings.basic.address-message' }, {}),
+                    message: formatMessage({ id: 'app.settings.basic.nickname-message' }, {}),
                   },
                 ],
               })(<Input />)}
@@ -181,9 +149,9 @@ class BaseView extends Component {
             </Button>
           </Form>
         </div>
-        <div className={styles.right}>
+        {/* <div className={styles.right}>
           <AvatarView avatar={this.getAvatarURL()} />
-        </div>
+        </div> */}
       </div>
     );
   }

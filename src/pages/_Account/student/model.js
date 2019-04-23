@@ -10,7 +10,6 @@ export default {
       academy: '88%',
       class: 32,
       number: 32,
-      teacher:1,
     }],
   },
 

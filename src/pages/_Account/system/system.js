@@ -34,7 +34,7 @@ const { Option } = Select;
 const RadioGroup = Radio.Group;
 
 
-const columns = [{
+const columns = (deleteSystemUser, showModal) => [{
   title: '姓名',
   dataIndex: 'name',
   key: 'name',
@@ -50,36 +50,128 @@ const columns = [{
   dataIndex: 'group',
   key: 'group',
   align: 'center',
-},{
+}, {
   title: '状态',
   key: 'status',
   dataIndex: 'status',
   align: 'center',
-  render: (cell, row) => (
+  render: (cell) => (
     <span>
-      {(parseInt(row.cpu, 10) >= 80 || parseInt(row.storage, 10) >= 80 || parseInt(row.disk, 10) >= 80) ? <Tag color='red' key='1'>离线</Tag> : null}
-      {((parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80)) ? <Tag color='orange'>离线</Tag> : null}
-      {(parseInt(row.cpu, 10) < 60 && parseInt(row.storage, 10) < 60 && parseInt(row.disk, 10) < 60) ? <Tag color='blue'>登陆中</Tag> : null}
+      {cell ? <Tag color='blue'>登陆中</Tag> : <Tag color='red' key='1'>离线</Tag>}
     </span>
   ),
-},{
+}, {
   title: '操作',
   key: 'action',
   align: 'center',
   render: (text, record) => (
     <span>
-      <a href="javascript:;">删除</a>
+      <a href="javascript:;" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
       <Divider type="vertical" />
-      <a href="javascript:;">修改</a>
+      <a href="javascript:;" onClick={(e) => showModal(e, record.key)}>修改</a>
     </span>
   ),
 }]
 
 @Form.create()
 class System extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      visible: false,
+      modelId: null
+    }
+  }
 
-  componentDidMount(){
-    // const { d}
+  showModal = (e, id) => {
+    this.setState({
+      visible: true,
+      modelId: id
+    });
+  }
+
+  handleOk = (e) => {
+    this.setState({
+      visible: false,
+    });
+    this.updateSystemUser();
+  }
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleSearch = e => {
+    e.preventDefault();
+    const { dispatch, form } = this.props;
+    const name = form.getFieldValue('systemUserName');
+    const homedirectory = form.getFieldValue('directory');
+    dispatch({
+      type: 'system/fetchSystemData',
+      payload: {
+        name,
+        homedirectory
+      }
+    })
+  }
+
+  componentDidMount() {
+    const { dispatch, form } = this.props;
+    const name = form.getFieldValue('systemUserName');
+    const homedirectory = form.getFieldValue('directory');
+    dispatch({
+      type: 'system/fetchSystemData',
+      payload: {
+        name,
+        homedirectory
+      }
+    })
+  }
+
+  deleteSystemUser = (e, id) => {
+    const { dispatch, form } = this.props;
+    const name = form.getFieldValue('systemUserName');
+    const homedirectory = form.getFieldValue('directory');
+    dispatch({
+      type: 'system/deleteSystemUser',
+      payload: {
+        id,
+        name,
+        homedirectory
+      }
+    })
+  }
+
+  updateSystemUser = () => {
+    const { modelId } = this.state;
+    const { dispatch, form } = this.props;
+    const name = form.getFieldValue('name');
+    const homedirectory = form.getFieldValue('homedirectory');
+    const groupname = form.getFieldValue('groupname');
+    if (modelId) {
+      dispatch({
+        type: 'system/updateSystemUser',
+        payload: {
+          id: this.state.modelId,
+          name,
+          homedirectory,
+          groupname
+        }
+      })
+    } else {
+      dispatch({
+        type: 'system/createSystemUser',
+        payload: {
+          id: this.state.modelId,
+          name,
+          homedirectory,
+          groupname
+        }
+      })
+    }
   }
 
   renderForm() {
@@ -91,12 +183,12 @@ class System extends React.Component {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="姓名">
-              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('systemUserName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="用户组">
-              {getFieldDecorator('status')(
+              {getFieldDecorator('directory')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="0">正常</Option>
                   <Option value="1">警告</Option>
@@ -110,11 +202,11 @@ class System extends React.Component {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
-               新建管理员
+              <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={(e) => this.showModal(e, null)}>
+                新建管理员
               </Button>
               <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
-               批量新建
+                批量新建
               </Button>
             </span>
           </Col>
@@ -123,15 +215,44 @@ class System extends React.Component {
     );
   }
 
+  renderModel() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Modal
+        title="信息修改"
+        visible={this.state.visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+      >
+        <Form layout="inline" style={{ display: 'flex' }}>
+          <FormItem label="姓名">
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="主目录">
+            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="用户组">
+            {getFieldDecorator('groupname')(<Input placeholder="请输入" />)}
+          </FormItem>
+        </Form>
+      </Modal>
+    )
+  }
+
 
   render() {
     const { data } = this.props;
     return (
       <Card bordered={false}>
+        <>
+          {this.renderModel()}
+        </>
         <div className={styles.tableList}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns(this.deleteSystemUser, this.showModal)} dataSource={data} />
       </Card>
     );
   }

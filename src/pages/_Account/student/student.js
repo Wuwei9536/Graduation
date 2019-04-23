@@ -53,11 +53,6 @@ const columns = [{
   key: 'number',
   align: 'center',
 }, {
-  title: '归属老师',
-  dataIndex: 'teacher',
-  key: 'teacher',
-  align: 'center',
-}, {
   title: '操作',
   key: 'action',
   align: 'center',

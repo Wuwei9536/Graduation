@@ -106,32 +106,6 @@ export async function updateFakeList(params) {
 export async function fakeAccountLogin(params) {
   return request(`/api/systemuser?${stringify(params)}`);
   // const { password, userName, type } = params;
-  // console.log('%ctype: ', 'font-size:15px;background-color: rgb(135, 208, 104);', type);
-  // if (password === 'root' && userName === 'admin') {
-  //   return{
-  //     status: 'ok',
-  //     type,
-  //     currentAuthority: 'admin',
-  //   };
-  //   // return;
-  // }
-  // if (password === 'root' && userName === 'user') {
-  //   return{
-  //     status: 'ok',
-  //     type,
-  //     currentAuthority: 'user',
-  //   }
-  // }
-  // return{
-  //   status: 'error',
-  //   type,
-  //   currentAuthority: 'guest',
-  // };
-
-  // return request('/api/login/account', {
-  //   method: 'POST',
-  //   data: params,
-  // });
 }
 
 export async function fakeRegister(params) {
@@ -218,13 +192,25 @@ export async function fetchStudentData() {
   }
 }
 
-export async function fetchSystemData() {
-  return {
-    data: [{
-      key: '1',
-      name: 'John Brown',
-      catalogue: '12%',
-      group: 32,
-    }],
-  }
+export async function fetchSystemData(params) {
+  return request(`/api/getsystemuser?${stringify(params)}`);
+}
+
+export async function deleteSystemUser(params) {
+  return request(`/api/deletesystemuser?${stringify(params)}`);
+}
+
+export async function updateSystemUser(params) {
+  return request('/api/updatesystemuser', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+
+export async function createSystemUser(params) {
+  return request('/api/createsystemuser', {
+    method: 'POST',
+    data: params,
+  });
 }

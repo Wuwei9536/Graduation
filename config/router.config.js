@@ -95,14 +95,6 @@ export default [
                 path: '/individual/info/security',
                 component: './_Individual/Settings/SecurityView',
               },
-              {
-                path: '/individual/info/binding',
-                component: './_Individual/Settings/BindingView',
-              },
-              {
-                path: '/individual/info/notification',
-                component: './_Individual/Settings/NotificationView',
-              },
             ],
           },
         ]

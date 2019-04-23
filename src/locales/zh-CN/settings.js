@@ -52,4 +52,10 @@ export default {
   'app.settings.notification.todo-description': '待办任务将以站内信的形式通知',
   'app.settings.open': '开',
   'app.settings.close': '关',
+
+  //-----------------------------
+  'app.settings.basic.name':'姓名',
+  'app.settings.basic.academy':'学院',
+  'app.settings.basic.classGrade':'班级',
+  'app.settings.basic.stuNum':'学号',
 };
