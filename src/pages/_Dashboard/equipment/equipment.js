@@ -11,7 +11,8 @@ import {
   Button,
   Divider,
   Table,
-  Tag
+  Tag,
+  Modal
 } from 'antd';
 import styles from './equipment.less';
 
@@ -19,7 +20,7 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 
-const columns = [{
+const columns = (deleteEquipment, showModal) => [{
   title: '设备名称',
   dataIndex: 'name',
   key: 'name',
@@ -44,6 +45,11 @@ const columns = [{
   title: 'cpu使用率',
   dataIndex: 'cpu',
   key: 'cpu',
+  align: 'center',
+}, {
+  title: 'cpu核数',
+  dataIndex: 'number',
+  key: 'number',
   align: 'center',
 }, {
   title: '内存使用率',
@@ -96,11 +102,11 @@ const columns = [{
   title: '操作',
   key: 'action',
   align: 'center',
-  render: () => (
+  render: (cell, record) => (
     <span>
-      <a href="http://localhost:8000/dashboard/cpu">删除</a>
+      <a href="javascript:;" onClick={(e) => deleteEquipment(e, record.key)}>删除</a>
       <Divider type="vertical" />
-      <a href="http://localhost:8000/dashboard/cpu">修改</a>
+      <a href="javascript:;" onClick={(e) => showModal(e, record.key)}>修改</a>
     </span>
   ),
 }]
@@ -110,21 +116,25 @@ class Equipment extends React.Component {
   constructor() {
     super()
     this.state = {
-      visible: false
+      visible: false,
+      modelId: null,
     }
   }
 
-  showModal = () => {
+  //修改
+  showModal = (e, id) => {
     this.setState({
       visible: true,
+      modelId: id
     });
   }
 
-  handleOk = (e) => {
-    console.log(e);
+
+  handleOk = () => {
     this.setState({
       visible: false,
     });
+    this.updateEquipment()
   }
 
   handleCancel = (e) => {
@@ -134,6 +144,42 @@ class Equipment extends React.Component {
     });
   }
 
+
+  //删除系统用户
+  deleteEquipment = (e, id) => {
+    const { dispatch, form } = this.props;
+    const equip_name = form.getFieldValue('name');
+    const status = form.getFieldValue('status');
+    dispatch({
+      type: 'equipment/deleteEquipment',
+      payload: {
+        id,
+        equip_name,
+        status
+      }
+    })
+  }
+
+  //更新系统用户
+  updateEquipment = () => {
+    const { modelId } = this.state;
+    const { dispatch, form } = this.props;
+    const values = form.getFieldsValue();
+    if (modelId) {
+      dispatch({
+        type: 'equipment/updateEquipment',
+        payload: {
+          id: modelId,
+          ...values
+        }
+      })
+    } else {
+      dispatch({
+        type: 'equipment/createEquipment',
+        payload: values
+      })
+    }
+  }
 
   // 拉取数据
   componentDidMount() {
@@ -204,30 +250,41 @@ class Equipment extends React.Component {
         onCancel={this.handleCancel}
       >
         <Form onSubmit={this.handleSearch} layout="inline">
-          <FormItem label="服务器名称">
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="ip地址">
-            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="服务器类型">
-            {getFieldDecorator('groupname')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="cpu型号">
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="cpu核数">
-            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="磁盘容量">
-            {getFieldDecorator('groupname')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="内存">
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="是否代理">
-            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
-          </FormItem>
+          <div style={{ display: 'flex' }}>
+            <FormItem label="服务器名称">
+              {getFieldDecorator('equipmentName')(<Input placeholder="请输入" />)}
+            </FormItem>
+            <FormItem label="ip地址">
+              {getFieldDecorator('ip')(<Input placeholder="请输入" />)}
+            </FormItem>
+            <FormItem label="服务器类型">
+              {getFieldDecorator('nodeType')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <FormItem label="cpu型号">
+              {getFieldDecorator('cpuType')(<Input placeholder="请输入" />)}
+            </FormItem>
+            <FormItem label="cpu核数">
+              {getFieldDecorator('cpuNum')(<Input placeholder="请输入" />)}
+            </FormItem>
+            <FormItem label="磁盘容量">
+              {getFieldDecorator('disk')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <FormItem label="内存">
+              {getFieldDecorator('storage')(<Input placeholder="请输入" />)}
+            </FormItem>
+            <FormItem label="是否安装agent">
+              {getFieldDecorator('agent')(
+                <Select placeholder="请选择">
+                  <Option value='1'>是</Option>
+                  <Option value="0">否</Option>
+                </Select>
+              )}
+            </FormItem>
+          </div>
         </Form>
       </Modal>
 
@@ -242,7 +299,7 @@ class Equipment extends React.Component {
         <div className={styles.tableList}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns(this.deleteEquipment, this.showModal)} dataSource={data} />
       </Card>
     );
   }

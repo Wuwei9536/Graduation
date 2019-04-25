@@ -1,21 +1,10 @@
-import { fetchEquipmentData } from '@/services/api';
+import { fetchEquipmentData ,createEquipment,deleteEquipment,updateEquipment} from '@/services/api';
 
 export default {
   namespace: 'equipment',
 
   state: {
-    data: [{
-      key: '1',
-      name: 'John Brown',
-      ip: "0.0.0.0",
-      type: "类型名称",
-      model: "89-1",
-      cpu: '88%',
-      storage: 32,
-      disk: 32,
-      software: 1,
-      agent: "否"
-    }],
+    data: [],
   },
 
   effects: {
@@ -23,9 +12,61 @@ export default {
       const response = yield call(fetchEquipmentData, payload);
       yield put({
         type: 'setEquipmentData',
-        payload:response.data
+        payload:response
       });
     },
+    *createEquipment({ payload }, { call, put }) {
+      yield call(createEquipment, {
+        equip_name:payload.equipmentName,
+        ip:payload.ip,
+        node_type:payload.nodeType,
+        cpu_model:payload.cpuType,
+        core_num:payload.cpuNum,
+        storage:payload.storage,
+        disk:payload.disk,
+        isagent:payload.agent
+      });
+      yield put({
+        type: 'fetchEquipmentData',
+        payload:{
+          equip_name:payload.name,
+          status:payload.status
+        }
+      });
+    },
+    *deleteEquipment({ payload }, { call, put }) {
+      yield call(deleteEquipment, {
+        id:payload.id
+      });
+      yield put({
+        type: 'fetchEquipmentData',
+        payload:{
+          equip_name:payload.equip_name,
+          status:payload.status
+        }
+      });
+    },
+    *updateEquipment({ payload }, { call, put }) {
+      yield call(updateEquipment, {
+        id:payload.id,
+        equip_name:payload.equipmentName,
+        ip:payload.ip,
+        node_type:payload.nodeType,
+        cpu_model:payload.cpuType,
+        core_num:payload.cpuNum,
+        storage:payload.storage,
+        disk:payload.disk,
+        isagent:payload.agent
+      });
+      yield put({
+        type: 'fetchEquipmentData',
+        payload:{
+          equip_name:payload.name,
+          status:payload.status
+        }
+      });
+    },
+    
   },
 
   reducers: {

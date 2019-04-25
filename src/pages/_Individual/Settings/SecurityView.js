@@ -1,90 +1,83 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import { List } from 'antd';
-// import { getTimeDistance } from '@/utils/utils';
+import { List, Modal, Form, Input, message } from 'antd';
+import { connect } from 'dva';
 
-const passwordStrength = {
-  strong: (
-    <font className="strong">
-      <FormattedMessage id="app.settings.security.strong" defaultMessage="Strong" />
-    </font>
-  ),
-  medium: (
-    <font className="medium">
-      <FormattedMessage id="app.settings.security.medium" defaultMessage="Medium" />
-    </font>
-  ),
-  weak: (
-    <font className="weak">
-      <FormattedMessage id="app.settings.security.weak" defaultMessage="Weak" />
-      Weak
-    </font>
-  ),
-};
 
+const FormItem = Form.Item;
+
+@Form.create()
 class SecurityView extends Component {
+  constructor() {
+    super()
+    this.state = { visible: false }
+  }
+  state = { visible: false }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleOk = (e) => {
+    this.setState({
+      visible: false,
+    });
+    const { dispatch, form } = this.props;
+    const password = form.getFieldValue('password');
+    dispatch({
+      type: 'individual/updateSystemUser',
+      payload: {
+        password,
+      }
+    })
+    message.info('修改成功')
+  }
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
   getData = () => [
     {
       title: formatMessage({ id: 'app.settings.security.password' }, {}),
-      description: (
-        <Fragment>
-          {/* {formatMessage({ id: 'app.settings.security.password-description' })}： */}
-          {/* {passwordStrength.strong} */}
-        </Fragment>
-      ),
       actions: [
-        <a>
+        <a onClick={this.showModal}>
           <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
-        </a>,
+        </a>
       ],
     },
-    // {
-    //   title: formatMessage({ id: 'app.settings.security.phone' }, {}),
-    //   description: `${formatMessage(
-    //     { id: 'app.settings.security.phone-description' },
-    //     {}
-    //   )}：138****8293`,
-    //   actions: [
-    //     <a>
-    //       <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
-    //     </a>,
-    //   ],
-    // },
-    // {
-    //   title: formatMessage({ id: 'app.settings.security.question' }, {}),
-    //   description: formatMessage({ id: 'app.settings.security.question-description' }, {}),
-    //   actions: [
-    //     <a>
-    //       <FormattedMessage id="app.settings.security.set" defaultMessage="Set" />
-    //     </a>,
-    //   ],
-    // },
-    // {
-    //   title: formatMessage({ id: 'app.settings.security.email' }, {}),
-    //   description: `${formatMessage(
-    //     { id: 'app.settings.security.email-description' },
-    //     {}
-    //   )}：ant***sign.com`,
-    //   actions: [
-    //     <a>
-    //       <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
-    //     </a>,
-    //   ],
-    // },
-    // {
-    //   title: formatMessage({ id: 'app.settings.security.mfa' }, {}),
-    //   description: formatMessage({ id: 'app.settings.security.mfa-description' }, {}),
-    //   actions: [
-    //     <a>
-    //       <FormattedMessage id="app.settings.security.bind" defaultMessage="Bind" />
-    //     </a>,
-    //   ],
-    // },
   ];
+
+
+  renderModal() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Modal
+        title="密码修改"
+        visible={this.state.visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+      >
+        <Form layout="inline">
+          <FormItem label="密码">
+            {getFieldDecorator('password')(<Input placeholder="请输入" />)}
+          </FormItem>
+        </Form>
+      </Modal>
+    );
+  }
 
   render() {
     return (
       <Fragment>
+        {this.renderModal()}
         <List
           itemLayout="horizontal"
           dataSource={this.getData()}
@@ -99,4 +92,4 @@ class SecurityView extends Component {
   }
 }
 
-export default SecurityView;
+export default connect()(SecurityView);

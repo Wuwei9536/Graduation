@@ -55,7 +55,7 @@ export default {
 
   //-----------------------------
   'app.settings.basic.name':'姓名',
-  'app.settings.basic.academy':'学院',
-  'app.settings.basic.classGrade':'班级',
-  'app.settings.basic.stuNum':'学号',
+  'app.settings.basic.homedirectory':'主目录',
+  'app.settings.basic.groupname':'用户组',
+  // 'app.settings.basic.stuNum':'学号',
 };

@@ -130,32 +130,8 @@ export async function fakeAccountLogin(params) {
 export async function getCurrentUser(params) {
   return request(`/api/getcurrentuser?${stringify(params)}`);
 }
-export async function fetchEquipmentData() {
-  return {
-    data: [{
-      key: '1',
-      name: 'John Brown',
-      ip: "0.0.0.0",
-      type: "类型名称",
-      model: "89-1",
-      cpu: '88%',
-      storage: 32,
-      disk: 32,
-      software: 1,
-      agent: "shi"
-    }, {
-      key: '2',
-      name: 'John Brown',
-      ip: "0.0.0.0",
-      type: "类型名称",
-      model: "89-1",
-      cpu: '88%',
-      storage: 32,
-      disk: 32,
-      software: 1,
-      agent: "shi"
-    }]
-  }
+export async function fetchEquipmentData(params) {
+  return request(`/api/getequipment?${stringify(params)}`);
 }
 
 export async function fetchCpuData() {
@@ -234,6 +210,28 @@ export async function updateStudentUser(params) {
 //创建学生用户
 export async function createStudentUser(params) {
   return request('/api/createstudentuser', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//新建设备
+export async function createEquipment(params) {
+  return request('/api/createequipment', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//删除设备
+export async function deleteEquipment(params) {
+  return request(`/api/deleteequipment?${stringify(params)}`);
+
+}
+
+//更新设备
+export async function updateEquipment(params) {
+  return request('/api/updateequipment', {
     method: 'POST',
     data: params,
   });
