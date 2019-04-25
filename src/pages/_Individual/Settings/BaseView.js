@@ -3,7 +3,7 @@ import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import { Form, Input, Upload, Select, Button } from 'antd';
 import { connect } from 'dva';
 import styles from './BaseView.less';
-import GeographicView from './GeographicView';
+// import GeographicView from './GeographicView';
 import PhoneView from './PhoneView';
 // import { getTimeDistance } from '@/utils/utils';
 

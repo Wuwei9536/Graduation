@@ -1,4 +1,4 @@
-import { fetchSystemData, deleteSystemUser, updateSystemUser, createSystemUser } from '@/services/api';
+import { fetchSystemData, deleteSystemUser, updateSystemUser, createSystemUser,downloadExcel,uploadExcel } from '@/services/api';
 
 export default {
   namespace: 'system',
@@ -26,23 +26,42 @@ export default {
       yield call(deleteSystemUser, payload);
       yield put({
         type: 'fetchSystemData',
-        payload
+        payload:{
+          name:payload.name,
+          groupname:payload.groupname
+        }
       })
     },
     *updateSystemUser({ payload }, { call, put }) {
-      yield call(updateSystemUser, payload);
+      yield call(updateSystemUser, {
+        id:payload.id,
+        name:payload.name,
+        homedirectory:payload.homedirectory,
+        groupname:payload.groupname,
+      });
       yield put({
         type: 'fetchSystemData',
-        payload
+        payload:{
+          name:payload.selectName,
+          groupname:payload.selectGroupName
+        }
       })
     },
     *createSystemUser({ payload }, { call, put }) {
-      yield call(createSystemUser, payload);
+      yield call(createSystemUser, {
+        name:payload.name,
+        homedirectory:payload.homedirectory,
+        groupname:payload.groupname
+      });
       yield put({
         type: 'fetchSystemData',
-        payload
+        payload:{
+          name:payload.selectName,
+          groupname:payload.selectGroupName
+        }
       })
-    }
+    },
+
   },
 
   reducers: {

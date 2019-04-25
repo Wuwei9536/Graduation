@@ -103,10 +103,7 @@ export async function updateFakeList(params) {
   });
 }
 
-export async function fakeAccountLogin(params) {
-  return request(`/api/systemuser?${stringify(params)}`);
-  // const { password, userName, type } = params;
-}
+
 
 export async function fakeRegister(params) {
   return request('/api/register', {
@@ -125,6 +122,14 @@ export async function getFakeCaptcha(mobile) {
 
 // ----------------------
 
+export async function fakeAccountLogin(params) {
+  return request(`/api/login?${stringify(params)}`);
+  // const { password, userName, type } = params;
+}
+
+export async function getCurrentUser(params) {
+  return request(`/api/getcurrentuser?${stringify(params)}`);
+}
 export async function fetchEquipmentData() {
   return {
     data: [{
@@ -179,27 +184,19 @@ export async function fetchCpuData() {
   }
 }
 
-export async function fetchStudentData() {
-  return {
-    data: [{
-      key: '1',
-      name: 'John Brown',
-      academy: '88%',
-      class: 32,
-      number: 32,
-      teacher: "s",
-    }],
-  }
-}
 
+
+//获取系统用户
 export async function fetchSystemData(params) {
   return request(`/api/getsystemuser?${stringify(params)}`);
 }
 
+//删除系统用户
 export async function deleteSystemUser(params) {
   return request(`/api/deletesystemuser?${stringify(params)}`);
 }
 
+//更新系统用户
 export async function updateSystemUser(params) {
   return request('/api/updatesystemuser', {
     method: 'POST',
@@ -207,9 +204,36 @@ export async function updateSystemUser(params) {
   });
 }
 
-
+//创建系统用户
 export async function createSystemUser(params) {
   return request('/api/createsystemuser', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+
+//获取学生用户
+export async function fetchStudentData(params) {
+  return request(`/api/getstudentuser?${stringify(params)}`);
+}
+
+//删除学生用户
+export async function deleteStudentUser(params) {
+  return request(`/api/deletestudentuser?${stringify(params)}`);
+}
+
+//更新学生用户
+export async function updateStudentUser(params) {
+  return request('/api/updatestudentuser', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+//创建学生用户
+export async function createStudentUser(params) {
+  return request('/api/createstudentuser', {
     method: 'POST',
     data: params,
   });

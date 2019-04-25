@@ -1,10 +1,10 @@
-import { fetchStudentData } from '@/services/api';
+import { fetchStudentData, deleteStudentUser, updateStudentUser, createStudentUser } from '@/services/api';
 
 export default {
   namespace: 'student',
 
   state: {
-     data : [{
+    data: [{
       key: '1',
       name: 'John Brown',
       academy: '88%',
@@ -18,8 +18,49 @@ export default {
       const response = yield call(fetchStudentData, payload);
       yield put({
         type: 'setStudentData',
-        payload:response.data
+        payload: response
       });
+    },
+    *deleteStudentUser({ payload }, { call, put }) {
+      yield call(deleteStudentUser, payload);
+      yield put({
+        type: 'fetchStudentData',
+        payload:{
+          stu_name:payload.stu_name,
+          class_grade:payload.class_grade
+        }
+      })
+    },
+    *updateStudentUser({ payload }, { call, put }) {
+      yield call(updateStudentUser, {
+        id:payload.id,
+        stu_name:payload.stu_name,
+        academy:payload.academy,
+        class_grade:payload.class_grade,
+        stu_num:payload.stu_num
+      });
+      yield put({
+        type: 'fetchStudentData',
+        payload:{
+          selectName:payload.selectName,
+          selectClassGrade:payload.selectClassGrade
+        }
+      })
+    },
+    *createStudentUser({ payload }, { call, put }) {
+      yield call(createStudentUser, {
+        stu_name:payload.stu_name,
+        academy:payload.academy,
+        class_grade:payload.class_grade,
+        stu_num:payload.stu_num
+      });
+      yield put({
+        type: 'fetchStudentData',
+        payload:{
+          selectName:payload.selectName,
+          selectClassGrade:payload.selectClassGrade
+        }
+      })
     },
   },
 
