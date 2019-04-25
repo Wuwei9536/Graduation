@@ -79,7 +79,7 @@ const columns = [{
   ),
 }, {
   title: '查看详情',
-  key: 'action',
+  key: 'detail',
   align: 'center',
   render: () => (
     <span>
@@ -92,10 +92,48 @@ const columns = [{
       <a href="http://localhost:8000/">软件</a>
     </span>
   ),
+}, {
+  title: '操作',
+  key: 'action',
+  align: 'center',
+  render: () => (
+    <span>
+      <a href="http://localhost:8000/dashboard/cpu">删除</a>
+      <Divider type="vertical" />
+      <a href="http://localhost:8000/dashboard/cpu">修改</a>
+    </span>
+  ),
 }]
 
 @Form.create()
 class Equipment extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      visible: false
+    }
+  }
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleOk = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleCancel = (e) => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  }
+
 
   // 拉取数据
   componentDidMount() {
@@ -143,7 +181,7 @@ class Equipment extends React.Component {
               <Button type="primary" htmlType="submit" onClick={this.fetchEquipmentData}>
                 查询
               </Button>
-              <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.handleModalVisible(true)}>
+              <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.showModal(true)}>
                 新建设备
               </Button>
             </span>
@@ -154,10 +192,53 @@ class Equipment extends React.Component {
   }
 
 
+  renderModal() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Modal
+        title="新建设备"
+        visible={this.state.visible}
+        onOk={this.handleOk}
+        onCancel={this.handleCancel}
+      >
+        <Form onSubmit={this.handleSearch} layout="inline">
+          <FormItem label="服务器名称">
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="ip地址">
+            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="服务器类型">
+            {getFieldDecorator('groupname')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="cpu型号">
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="cpu核数">
+            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="磁盘容量">
+            {getFieldDecorator('groupname')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="内存">
+            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="是否代理">
+            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
+          </FormItem>
+        </Form>
+      </Modal>
+
+    );
+  }
+
   render() {
     const { data } = this.props;
     return (
       <Card bordered={false}>
+        {this.renderModal()}
         <div className={styles.tableList}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
         </div>
