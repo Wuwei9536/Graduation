@@ -122,44 +122,42 @@ export async function getFakeCaptcha(mobile) {
 
 // ----------------------
 
+//登陆
 export async function fakeAccountLogin(params) {
   return request(`/api/login?${stringify(params)}`);
   // const { password, userName, type } = params;
 }
 
+// 获取当前用户
 export async function getCurrentUser(params) {
   return request(`/api/getcurrentuser?${stringify(params)}`);
 }
+
+//获取设备
 export async function fetchEquipmentData(params) {
   return request(`/api/getequipment?${stringify(params)}`);
 }
 
-export async function fetchCpuData() {
-  return {
-    data: [{
-      key: '1',
-      time: 1555465811009,
-      cpu: 0.3
-    }, {
-      key: '2',
-      time: 1555472570301,
-      cpu: 0.4
-    }, {
-      key: '3',
-      time: 1555474570301,
-      cpu: 0.4
-    }, {
-      key: '4',
-      time: 1555475570301,
-      cpu: 0.4
-    }, {
-      key: '5',
-      time: 1555486570301,
-      cpu: 0.4
-    }]
-  }
+// 获取cpu
+export async function fetchCpuData(params) {
+  return request(`/api/getcpu?${stringify(params)}`);
 }
 
+// 获取内存
+
+export async function fetchStorageData(params) {
+  return request(`/api/getstorage?${stringify(params)}`);
+}
+
+// 获取磁盘
+export async function fetchDiskData(params) {
+  return request(`/api/getdisk?${stringify(params)}`);
+}
+
+// 获取软件
+export async function fetchSoftware(params) {
+  return request(`/api/getsoftware?${stringify(params)}`);
+}
 
 
 //获取系统用户

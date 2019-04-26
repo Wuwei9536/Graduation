@@ -42,17 +42,17 @@ export default [
           {
             path: '/dashboard/storage',
             name: 'storage',
-            component: './_Dashboard/storage/storage.js',
+            component: './_Dashboard/cpu/cpu.js',
           },
           {
             path: '/dashboard/disk',
             name: 'disk',
-            component: './_Dashboard/disk/disk.js',
+            component: './_Dashboard/cpu/cpu.js',
           },
           {
             path: '/dashboard/software',
             name: 'software',
-            component: './_Dashboard/equipment/equipment.js',
+            component: './_Dashboard/software/software.js',
           },
         ],
       },

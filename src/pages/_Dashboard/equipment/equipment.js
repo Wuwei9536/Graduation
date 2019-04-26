@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-// import router from 'umi/router';
+import router from 'umi/router';
 import {
   Row,
   Col,
@@ -20,12 +20,11 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 
-const columns = (deleteEquipment, showModal) => [{
+const columns = (deleteEquipment, showModal, navigate) => [{
   title: '设备名称',
   dataIndex: 'name',
   key: 'name',
   align: 'center',
-  // render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: 'ip地址',
   dataIndex: 'ip',
@@ -87,15 +86,15 @@ const columns = (deleteEquipment, showModal) => [{
   title: '查看详情',
   key: 'detail',
   align: 'center',
-  render: () => (
+  render: (cell, row) => (
     <span>
-      <a href="http://localhost:8000/dashboard/cpu">cpu</a>
+      <a href="javascript:;" onClick={()=>navigate('/dashboard/cpu', row.key)}>cpu</a>
       <Divider type="vertical" />
-      <a href="http://localhost:8000/dashboard/cpu">内存</a>
+      <a href="javascript:;" onClick={()=>navigate('/dashboard/storage', row.key)}>内存</a>
       <Divider type="vertical" />
-      <a href="http://localhost:8000/">磁盘</a>
+      <a href="javascript:;" onClick={()=>navigate('/dashboard/disk', row.key)}>磁盘</a>
       <Divider type="vertical" />
-      <a href="http://localhost:8000/">软件</a>
+      <a href="javascript:;" onClick={()=>navigate('/dashboard/software', row.key)}>软件</a>
     </span>
   ),
 }, {
@@ -119,6 +118,9 @@ class Equipment extends React.Component {
       visible: false,
       modelId: null,
     }
+  }
+  navigate = (path, id) => {
+    router.push(`${path}?id=${id}`)
   }
 
   //修改
@@ -299,7 +301,7 @@ class Equipment extends React.Component {
         <div className={styles.tableList}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
         </div>
-        <Table columns={columns(this.deleteEquipment, this.showModal)} dataSource={data} />
+        <Table columns={columns(this.deleteEquipment, this.showModal,this.navigate)} dataSource={data} />
       </Card>
     );
   }

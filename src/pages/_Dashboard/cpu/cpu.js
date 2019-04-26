@@ -43,14 +43,13 @@ import style from './cpu.less';
 
 const columns = [{
     title: '时间点',
-    dataIndex: 'time',
-    key: 'time',
+    dataIndex: 'tableTime',
+    key: 'tableTime',
     align: 'center',
-    // render: text => <a href="javascript:;">{text}</a>,
 }, {
-    title: 'cpu使用率',
-    dataIndex: 'cpu',
-    key: 'cpu',
+    title: '使用率',
+    dataIndex: 'cpuPercent',
+    key: 'cpuPercent',
     align: 'center',
 }, {
     title: '状态',
@@ -59,18 +58,12 @@ const columns = [{
     align: 'center',
     render: (cell, row) => (
         <span>
-            {(parseInt(row.cpu, 10) >= 80 || parseInt(row.storage, 10) >= 80 || parseInt(row.disk, 10) >= 80) ? <Tag color='red' key='1'>危险</Tag> : null}
-            {((parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80) || (parseInt(row.cpu, 10) >= 60 && parseInt(row.cpu, 10) < 80)) ? <Tag color='orange'>警告</Tag> : null}
-            {(parseInt(row.cpu, 10) < 60 && parseInt(row.storage, 10) < 60 && parseInt(row.disk, 10) < 60) ? <Tag color='blue'>正常</Tag> : null}
+            {parseInt(row.cpuPercent, 10) >= 80 ? <Tag color='red' key='1'>危险</Tag> : null}
+            {((parseInt(row.cpuPercent, 10) >= 60 && parseInt(row.cpuPercent, 10) < 80)) ? <Tag color='orange'>警告</Tag> : null}
+            {(parseInt(row.cpuPercent, 10) < 60) ? <Tag color='blue'>正常</Tag> : null}
         </span>
     ),
 }]
-
-const menuData = [
-    {name:'a'},
-    {name:'b'}
-]
-
 
 const cols = {
     cpu: {
@@ -79,35 +72,82 @@ const cols = {
     time: {
         type: 'time',
         mask: 'HH:mm:ss',
-        tickCount: 6,
     }
 };
 
 class Cpu extends React.Component {
-
-    componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch({
-            type: 'cpu/fetchCpuData',
-            payload: 1
-        })
+    constructor() {
+        super()
+        this.state = {
+            waveTitle:''
+        }
     }
 
-    menu = (menuData) => {
+    //初始化
+    componentDidMount() {
+        const { dispatch, location } = this.props;
+        const { query, pathname } = location; //路由参数 无参数时query={}
+        this.judgeRoute(pathname);
+        dispatch({
+            type: 'cpu/fetchCpuData',
+            payload: {
+                id: query.id ? query.id : null,
+                pathname
+            }
+        });
+    }
+
+    judgeRoute = (pathname) => {
+        switch (pathname) {
+            case '/dashboard/cpu':
+                this.setState({
+                    waveTitle: 'cpu剩余容量'
+                })
+                break;
+            case '/dashboard/storage':
+                this.setState({
+                    waveTitle: '内存剩余容量'
+                })
+                break;
+            case '/dashboard/disk':
+                this.setState({
+                    waveTitle: '磁盘剩余容量'
+                })
+                break;
+            default:
+                break;
+        }
+    }
+    //下拉列表
+    menu = () => {
+        const { equipmentData } = this.props;
         return (
             <Menu>
-                {menuData.map((item,index) => <Menu.Item key={index}><Icon type="user" />{item.name}</Menu.Item>)}
+                {equipmentData.map((item, index) => <Menu.Item key={item.key} onClick={(e) => this.changeEquipment(e, item.key)}><Icon type="user" />{item.name}</Menu.Item>)}
             </Menu>
         )
     }
 
+    // 点击下拉列表选择设备
+    changeEquipment = (e, id) => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'cpu/fetchCpuData',
+            payload: {
+                id
+            }
+        });
+    }
+
     render() {
-        const { data } = this.props;
+        // data =>chart数据 percent=>水波纹比例  equipmentData=> 下拉列表数据  defaultEquipment=>默认显示设备
+        const { data, percent, equipmentData, defaultEquipment } = this.props;
+        const { waveTitle} = this.state;
         return (
             <Card>
-                <Dropdown overlay={this.menu(menuData)}>
+                <Dropdown overlay={this.menu()}>
                     <Button style={{ marginLeft: 8 }}>
-                        a设备 <Icon type="down" />
+                        {defaultEquipment} <Icon type="down" />
                     </Button>
                 </Dropdown>
                 <div>
@@ -117,7 +157,7 @@ class Cpu extends React.Component {
                             name="cpu"
                             label={{
                                 formatter: val => {
-                                    return val * 10 + '%';
+                                    return val * 100 + '%';
                                 }
                             }}
                         />
@@ -134,8 +174,8 @@ class Cpu extends React.Component {
                     <div style={{ textAlign: 'center' }}>
                         <WaterWave
                             height={261}
-                            title="cpu容量剩余"
-                            percent={34}
+                            title={waveTitle}
+                            percent={percent}
                             className={style.waterWave}
                         />
                     </div>
@@ -149,7 +189,10 @@ class Cpu extends React.Component {
 }
 
 const mapStateToProps = ({ cpu }) => ({
-    data: cpu.data
+    data: cpu.data,
+    percent: cpu.percent,
+    equipmentData: cpu.equipment,
+    defaultEquipment: cpu.defaultEquipment
 });
 
 export default connect(mapStateToProps)(Cpu);
