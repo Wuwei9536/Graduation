@@ -159,7 +159,7 @@ class Register extends Component {
 
   renderPasswordProgress = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const value = form.getFieldValue('account');
     const passwordStatus = this.getPasswordStatus();
     return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
@@ -180,19 +180,20 @@ class Register extends Component {
     const { count, prefix, help, visible } = this.state;
     return (
       <div className={styles.main}>
+        {/* 注册title */}
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('mail', {
+            {getFieldDecorator('account', {
               rules: [
                 {
                   required: true,
                   message: formatMessage({ id: 'validation.email.required' }),
                 },
                 {
-                  type: 'email',
+                  type: 'string',
                   message: formatMessage({ id: 'validation.email.wrong-format' }),
                 },
               ],
@@ -200,6 +201,7 @@ class Register extends Component {
               <Input size="large" placeholder={formatMessage({ id: 'form.email.placeholder' })} />
             )}
           </FormItem>
+
           <FormItem help={help}>
             <Popover
               getPopupContainer={node => node.parentNode}
@@ -250,7 +252,7 @@ class Register extends Component {
               />
             )}
           </FormItem>
-         
+
           <FormItem>
             <Button
               size="large"

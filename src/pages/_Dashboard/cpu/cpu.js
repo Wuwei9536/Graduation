@@ -10,19 +10,10 @@ import {
     Tag
 } from 'antd';
 import {
-    G2,
     Chart,
     Geom,
     Axis,
     Tooltip,
-    Coord,
-    Label,
-    Legend,
-    View,
-    Guide,
-    Shape,
-    Facet,
-    Util
 } from "bizcharts";
 import { WaterWave } from '@/components/Charts';
 import style from './cpu.less';
