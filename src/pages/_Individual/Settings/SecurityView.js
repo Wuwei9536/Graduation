@@ -12,7 +12,6 @@ class SecurityView extends Component {
     super()
     this.state = { visible: false }
   }
-  state = { visible: false }
 
   showModal = () => {
     this.setState({
@@ -58,10 +57,11 @@ class SecurityView extends Component {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const {visible} =this.props;
     return (
       <Modal
         title="密码修改"
-        visible={this.state.visible}
+        visible={visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >

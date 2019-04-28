@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import { Form, Input, Upload, Select, Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { connect } from 'dva';
 import styles from './BaseView.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
 @connect(({ user }) => ({
   currentUser: user.currentUser,
@@ -29,13 +28,13 @@ class BaseView extends Component {
     this.view = ref;
   };
 
-  handleSubmit=()=>{
+  handleSubmit = () => {
     const { dispatch, form } = this.props;
     const payload = form.getFieldsValue();
-      dispatch({
-        type: 'individual/updateSystemUser',
-        payload
-      })
+    dispatch({
+      type: 'individual/updateSystemUser',
+      payload
+    })
   }
   render() {
     const {

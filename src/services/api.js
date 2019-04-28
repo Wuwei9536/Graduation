@@ -122,7 +122,7 @@ export async function getFakeCaptcha(mobile) {
 
 // ----------------------
 
-//登陆
+// 登陆
 export async function fakeAccountLogin(params) {
   return request(`/api/login?${stringify(params)}`);
   // const { password, userName, type } = params;
@@ -133,7 +133,7 @@ export async function getCurrentUser(params) {
   return request(`/api/getcurrentuser?${stringify(params)}`);
 }
 
-//获取设备
+// 获取设备
 export async function fetchEquipmentData(params) {
   return request(`/api/getequipment?${stringify(params)}`);
 }
@@ -160,17 +160,17 @@ export async function fetchSoftware(params) {
 }
 
 
-//获取系统用户
+// 获取系统用户
 export async function fetchSystemData(params) {
   return request(`/api/getsystemuser?${stringify(params)}`);
 }
 
-//删除系统用户
+// 删除系统用户
 export async function deleteSystemUser(params) {
   return request(`/api/deletesystemuser?${stringify(params)}`);
 }
 
-//更新系统用户
+// 更新系统用户
 export async function updateSystemUser(params) {
   return request('/api/updatesystemuser', {
     method: 'POST',
@@ -178,7 +178,7 @@ export async function updateSystemUser(params) {
   });
 }
 
-//创建系统用户
+// 创建系统用户
 export async function createSystemUser(params) {
   return request('/api/createsystemuser', {
     method: 'POST',
@@ -187,17 +187,17 @@ export async function createSystemUser(params) {
 }
 
 
-//获取学生用户
+// 获取学生用户
 export async function fetchStudentData(params) {
   return request(`/api/getstudentuser?${stringify(params)}`);
 }
 
-//删除学生用户
+// 删除学生用户
 export async function deleteStudentUser(params) {
   return request(`/api/deletestudentuser?${stringify(params)}`);
 }
 
-//更新学生用户
+// 更新学生用户
 export async function updateStudentUser(params) {
   return request('/api/updatestudentuser', {
     method: 'POST',
@@ -205,7 +205,7 @@ export async function updateStudentUser(params) {
   });
 }
 
-//创建学生用户
+// 创建学生用户
 export async function createStudentUser(params) {
   return request('/api/createstudentuser', {
     method: 'POST',
@@ -213,7 +213,7 @@ export async function createStudentUser(params) {
   });
 }
 
-//新建设备
+// 新建设备
 export async function createEquipment(params) {
   return request('/api/createequipment', {
     method: 'POST',
@@ -221,13 +221,13 @@ export async function createEquipment(params) {
   });
 }
 
-//删除设备
+// 删除设备
 export async function deleteEquipment(params) {
   return request(`/api/deleteequipment?${stringify(params)}`);
 
 }
 
-//更新设备
+// 更新设备
 export async function updateEquipment(params) {
   return request('/api/updateequipment', {
     method: 'POST',

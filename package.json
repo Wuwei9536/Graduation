@@ -1,8 +1,9 @@
 {
-  "name": "ant-design-pro",
+  "name": "bigdata",
   "version": "2.3.1",
   "private": true,
-  "description": "An out-of-box UI solution for enterprise applications",
+  "author": "wuwei",
+  "description": "An Big Data Management Platform",
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
     "build": "umi build && npm run functions:build",

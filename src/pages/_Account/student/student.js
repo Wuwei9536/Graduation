@@ -1,7 +1,5 @@
-import React, { PureComponent, Fragment } from 'react';
+import React from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
-import router from 'umi/router';
 import reqwest from 'reqwest';
 import {
   Row,
@@ -12,26 +10,17 @@ import {
   Select,
   Icon,
   Button,
-  Dropdown,
-  Menu,
-  InputNumber,
-  DatePicker,
   Modal,
   message,
-  Badge,
   Divider,
-  Steps,
-  Radio,
   Table,
   Tag,
   Upload
 } from 'antd';
 import styles from './student.less';
+
 const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
 const { Option } = Select;
-const RadioGroup = Radio.Group;
 
 const columns = (deleteSystemUser, showModal) => [{
   title: '姓名',
@@ -69,9 +58,9 @@ const columns = (deleteSystemUser, showModal) => [{
   align: 'center',
   render: (text, record) => (
     <span>
-      <a href="javascript:;" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
+      <a href="" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
       <Divider type="vertical" />
-      <a href="javascript:;" onClick={(e) => showModal(e, record.key)}>修改</a>
+      <a href="" onClick={(e) => showModal(e, record.key)}>修改</a>
     </span>
   ),
 }]
@@ -103,7 +92,7 @@ class Student extends React.Component {
     })
   }
 
-  //上传excel
+  // 上传excel
   handleUpload = () => {
     const { fileList } = this.state;
     const formData = new FormData();
@@ -136,7 +125,7 @@ class Student extends React.Component {
   }
 
 
-  //修改
+  // 修改
   showModal = (e, id) => {
     this.setState({
       visible: true,
@@ -151,7 +140,7 @@ class Student extends React.Component {
     });
   }
 
-  //modal ok
+  // modal ok
   handleOk = (e) => {
     this.setState({
       visible: false,
@@ -159,7 +148,7 @@ class Student extends React.Component {
     this.updateStudentUser();
   }
 
-  //modal取消
+  // modal取消
   handleCancel = (e) => {
     console.log(e);
     this.setState({
@@ -168,7 +157,7 @@ class Student extends React.Component {
     });
   }
 
-  //点击查询
+  // 点击查询
   handleSearch = e => {
     e.preventDefault();
     const { dispatch, form } = this.props;
@@ -183,7 +172,7 @@ class Student extends React.Component {
     })
   }
 
-  //删除学生用户
+  // 删除学生用户
   deleteSystemUser = (e, id) => {
     const { dispatch, form } = this.props;
     const stu_name = form.getFieldValue('name');
@@ -198,7 +187,7 @@ class Student extends React.Component {
     })
   }
 
-  //更新系统用户
+  // 更新系统用户
   updateStudentUser = () => {
     const { modelId } = this.state;
     const { dispatch, form } = this.props;
@@ -212,7 +201,7 @@ class Student extends React.Component {
       dispatch({
         type: 'student/updateStudentUser',
         payload: {
-          id: this.state.modelId,
+          id: modelId,
           stu_name,
           academy,
           class_grade,
@@ -236,7 +225,7 @@ class Student extends React.Component {
     }
   }
 
-  //下载excel
+  // 下载excel
   downloadExcelStu = (bool) => {
     window.open('/api/downloadexcelstu?needData=' + bool)
   }
@@ -276,20 +265,19 @@ class Student extends React.Component {
           <Col md={4} sm={12}>
             <Button icon="plus" type="primary" style={{ marginBottom: 36 }} onClick={(e) => this.showModal(e, null)}>
               新建学生
-              </Button>
+            </Button>
           </Col>
           <Col md={4} sm={12}>
             <Button icon="plus" type="primary" style={{ marginBottom: 36 }} onClick={() => this.showExcelModal()}>
               批量新建
-              </Button>
+            </Button>
           </Col>
           <Col md={4} sm={12}>
             <Button type="primary" style={{ marginBottom: 36 }} onClick={() => this.downloadExcelStu(true)}>
               导出
-              </Button>
+            </Button>
           </Col>
-          <Col md={12} sm={36}>
-          </Col>
+          <Col md={12} sm={36} />
         </Row>
       </Form>
     );
@@ -299,10 +287,11 @@ class Student extends React.Component {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const { visible } =this.state
     return (
       <Modal
         title="基本信息"
-        visible={this.state.visible}
+        visible={visible}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
@@ -325,7 +314,7 @@ class Student extends React.Component {
   }
 
   renderExcelModel() {
-    const { uploading, fileList } = this.state;
+    const { uploading, fileList,excelVisible } = this.state;
     const uploadProps = {
       onRemove: (file) => {
         this.setState((state) => {
@@ -348,7 +337,7 @@ class Student extends React.Component {
     return (
       <Modal
         title="批量新建"
-        visible={this.state.excelVisible}
+        visible={excelVisible}
         onCancel={this.handleCancel}
         footer={null}
       >
@@ -373,7 +362,7 @@ class Student extends React.Component {
             下载指定格式的excel表格
           </Button>
         </div>
-      </Modal >
+      </Modal>
     )
   }
 

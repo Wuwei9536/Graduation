@@ -1,24 +1,11 @@
 import React from 'react';
 import { connect } from 'dva';
 import {
-    Row,
-    Col,
     Card,
-    Form,
-    Input,
-    Select,
     Icon,
     Button,
     Dropdown,
     Menu,
-    InputNumber,
-    DatePicker,
-    Modal,
-    message,
-    Badge,
-    Divider,
-    Steps,
-    Radio,
     Table,
     Tag
 } from 'antd';
@@ -37,7 +24,7 @@ import {
     Facet,
     Util
 } from "bizcharts";
-import { TimelineChart, WaterWave } from '@/components/Charts';
+import { WaterWave } from '@/components/Charts';
 import style from './cpu.less';
 
 
@@ -79,14 +66,14 @@ class Cpu extends React.Component {
     constructor() {
         super()
         this.state = {
-            waveTitle:''
+            waveTitle: ''
         }
     }
 
-    //初始化
+    // 初始化
     componentDidMount() {
         const { dispatch, location } = this.props;
-        const { query, pathname } = location; //路由参数 无参数时query={}
+        const { query, pathname } = location; // 路由参数 无参数时query={}
         this.judgeRoute(pathname);
         dispatch({
             type: 'cpu/fetchCpuData',
@@ -118,7 +105,8 @@ class Cpu extends React.Component {
                 break;
         }
     }
-    //下拉列表
+
+    // 下拉列表
     menu = () => {
         const { equipmentData } = this.props;
         return (
@@ -141,8 +129,8 @@ class Cpu extends React.Component {
 
     render() {
         // data =>chart数据 percent=>水波纹比例  equipmentData=> 下拉列表数据  defaultEquipment=>默认显示设备
-        const { data, percent, equipmentData, defaultEquipment } = this.props;
-        const { waveTitle} = this.state;
+        const { data, percent, defaultEquipment } = this.props;
+        const { waveTitle } = this.state;
         return (
             <Card>
                 <Dropdown overlay={this.menu()}>
