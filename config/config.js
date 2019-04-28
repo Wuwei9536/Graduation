@@ -117,7 +117,7 @@ export default {
 
   proxy: {
     "/api": {
-      "target": "http://122.152.205.63:8000",
+      "target": "http://122.152.205.63:8000/",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     }

@@ -124,7 +124,7 @@ export async function getFakeCaptcha(mobile) {
 
 //登陆
 export async function fakeAccountLogin(params) {
-  return request(`http://122.152.205.63:8000/login?${stringify(params)}`);
+  return request(`/api/login?${stringify(params)}`);
   // const { password, userName, type } = params;
 }
 
