@@ -116,8 +116,8 @@ self.__precacheManifest = [
     "url": "/p___Individual__Settings__Info.chunk.css"
   },
   {
-    "revision": "7db0da6a572c4d946d955e42d8268844",
-    "url": "/ggeditor/flow/normal.svg"
+    "revision": "7e8663d516fab38eff38b94b08da5d76",
+    "url": "/ggeditor/flow/model.svg"
   },
   {
     "revision": "24a4ddea1095c80230d8",
@@ -144,8 +144,8 @@ self.__precacheManifest = [
     "url": "/p__User__Login.async.js"
   },
   {
-    "revision": "347329d0982682b42d40c8162817a940",
-    "url": "/icons/icon-128x128.png"
+    "revision": "5661ce8e2472d2727e8fd0390b22ba37",
+    "url": "/icons/icon-512x512.png"
   },
   {
     "revision": "ef855a60cca1cecf2d56",
@@ -160,12 +160,12 @@ self.__precacheManifest = [
     "url": "/layouts__UserLayout.async.js"
   },
   {
-    "revision": "5661ce8e2472d2727e8fd0390b22ba37",
-    "url": "/icons/icon-512x512.png"
+    "revision": "bb1fde8c0c658093c0c283f313069467",
+    "url": "/ggeditor/koni/bank.svg"
   },
   {
-    "revision": "7e8663d516fab38eff38b94b08da5d76",
-    "url": "/ggeditor/flow/model.svg"
+    "revision": "7db0da6a572c4d946d955e42d8268844",
+    "url": "/ggeditor/flow/normal.svg"
   },
   {
     "revision": "da6cdb8a317f5384fa159cde1f33b0f0",
@@ -188,8 +188,8 @@ self.__precacheManifest = [
     "url": "/ggeditor/koni/person.svg"
   },
   {
-    "revision": "bb1fde8c0c658093c0c283f313069467",
-    "url": "/ggeditor/koni/bank.svg"
+    "revision": "347329d0982682b42d40c8162817a940",
+    "url": "/icons/icon-128x128.png"
   },
   {
     "revision": "f161daaf3b30acfccfae4f38099c2161",
