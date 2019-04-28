@@ -24,11 +24,11 @@ self.__precacheManifest = [
     "url": "/static/njit.729bc9bc.png"
   },
   {
-    "revision": "40d806ce42c4aa6ae83b",
+    "revision": "0b3df6146f280a7d274d",
     "url": "/umi.js"
   },
   {
-    "revision": "40d806ce42c4aa6ae83b",
+    "revision": "0b3df6146f280a7d274d",
     "url": "/umi.css"
   },
   {
@@ -144,8 +144,8 @@ self.__precacheManifest = [
     "url": "/p__User__Login.async.js"
   },
   {
-    "revision": "5661ce8e2472d2727e8fd0390b22ba37",
-    "url": "/icons/icon-512x512.png"
+    "revision": "347329d0982682b42d40c8162817a940",
+    "url": "/icons/icon-128x128.png"
   },
   {
     "revision": "ef855a60cca1cecf2d56",
@@ -160,8 +160,8 @@ self.__precacheManifest = [
     "url": "/layouts__UserLayout.async.js"
   },
   {
-    "revision": "bb1fde8c0c658093c0c283f313069467",
-    "url": "/ggeditor/koni/bank.svg"
+    "revision": "c23aa881b8d0e959f6c0aeb5ae7e4baa",
+    "url": "/icons/icon-192x192.png"
   },
   {
     "revision": "7db0da6a572c4d946d955e42d8268844",
@@ -180,16 +180,16 @@ self.__precacheManifest = [
     "url": "/index.html"
   },
   {
-    "revision": "c23aa881b8d0e959f6c0aeb5ae7e4baa",
-    "url": "/icons/icon-192x192.png"
+    "revision": "5661ce8e2472d2727e8fd0390b22ba37",
+    "url": "/icons/icon-512x512.png"
   },
   {
     "revision": "0036cca03a82d851933f5e4b5789caaa",
     "url": "/ggeditor/koni/person.svg"
   },
   {
-    "revision": "347329d0982682b42d40c8162817a940",
-    "url": "/icons/icon-128x128.png"
+    "revision": "bb1fde8c0c658093c0c283f313069467",
+    "url": "/ggeditor/koni/bank.svg"
   },
   {
     "revision": "f161daaf3b30acfccfae4f38099c2161",
