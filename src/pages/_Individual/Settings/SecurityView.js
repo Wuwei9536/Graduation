@@ -45,7 +45,7 @@ class SecurityView extends Component {
     {
       title: formatMessage({ id: 'app.settings.security.password' }, {}),
       actions: [
-        <a onClick={this.showModal}>
+        <a href="javascript:;" onClick={this.showModal}>
           <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
         </a>
       ],
@@ -57,7 +57,7 @@ class SecurityView extends Component {
     const {
       form: { getFieldDecorator },
     } = this.props;
-    const {visible} =this.props;
+    const {visible} =this.state;
     return (
       <Modal
         title="密码修改"

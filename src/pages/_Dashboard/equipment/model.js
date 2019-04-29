@@ -9,7 +9,11 @@ export default {
 
   effects: {
     *fetchEquipmentData({ payload }, { call, put }) {
-      const response = yield call(fetchEquipmentData, payload);
+      const today = new Date().toLocaleDateString().replace(/\//g,"-");;
+      const response = yield call(fetchEquipmentData, {
+        today,
+        ...payload
+      });
       yield put({
         type: 'setEquipmentData',
         payload:response

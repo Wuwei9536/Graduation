@@ -95,13 +95,9 @@ class Register extends Component {
     const { form, dispatch } = this.props;
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
-        const { prefix } = this.state;
         dispatch({
           type: 'register/submit',
-          payload: {
-            ...values,
-            prefix,
-          },
+          payload: values
         });
       }
     });
@@ -151,15 +147,9 @@ class Register extends Component {
     }
   };
 
-  changePrefix = value => {
-    this.setState({
-      prefix: value,
-    });
-  };
-
   renderPasswordProgress = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('account');
+    const value = form.getFieldValue('password');
     const passwordStatus = this.getPasswordStatus();
     return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
@@ -186,14 +176,26 @@ class Register extends Component {
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('account', {
+          {getFieldDecorator('name', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.name.required' }),
+                },
+              ],
+            })(
+              <Input size="large" placeholder={formatMessage({ id: 'form.name.placeholder' })} />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('mail', {
               rules: [
                 {
                   required: true,
                   message: formatMessage({ id: 'validation.email.required' }),
                 },
                 {
-                  type: 'string',
+                  type: 'email',
                   message: formatMessage({ id: 'validation.email.wrong-format' }),
                 },
               ],

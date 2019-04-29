@@ -15,7 +15,6 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
-      console.log('%cresponse: ', 'font-size:15px;background-color: rgb(135, 208, 104);', response);
       yield put({
         type: 'changeLoginStatus',
         payload: response,

@@ -14,8 +14,7 @@ export default {
   effects: {
     //获取cpu数据 获取设备列表 设置默认显示设备
     *fetchCpuData({ payload }, { call, put }) {
-      console.log('%cpayload: ', 'font-size:15px;background-color: rgb(135, 208, 104);', payload);
-      const equipment = yield call(fetchEquipmentData); //获取设备列表
+      const equipment = yield call(fetchEquipmentData,{}); //获取设备列表
       const { id, pathname } = payload;
       if (!id) { //如果路由没有参数
         payload = { id: equipment[0].key } //参数就等于设备列表第一个的id

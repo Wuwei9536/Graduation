@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import reqwest from 'reqwest';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import {
   Row,
   Col,
@@ -15,7 +16,8 @@ import {
   Divider,
   Table,
   Tag,
-  Upload
+  Upload,
+  InputNumber
 } from 'antd';
 import styles from './student.less';
 
@@ -58,9 +60,9 @@ const columns = (deleteSystemUser, showModal) => [{
   align: 'center',
   render: (text, record) => (
     <span>
-      <a href="" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
+      <a href="javascript:;" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
       <Divider type="vertical" />
-      <a href="" onClick={(e) => showModal(e, record.key)}>修改</a>
+      <a href="javascript:;" onClick={(e) => showModal(e, record.key, true)}>修改</a>
     </span>
   ),
 }]
@@ -75,14 +77,15 @@ class Student extends React.Component {
       excelVisible: false,
       fileList: [],
       uploading: false,
+      isUpdate: false
     }
   }
 
 
   componentDidMount() {
     const { dispatch, form } = this.props;
-    const stu_name = form.getFieldValue('name');
-    const class_grade = form.getFieldValue('classGrade');
+    const stu_name = form.getFieldValue('name') || undefined;
+    const class_grade = form.getFieldValue('classGrade') || undefined;
     dispatch({
       type: 'student/fetchStudentData',
       payload: {
@@ -126,10 +129,11 @@ class Student extends React.Component {
 
 
   // 修改
-  showModal = (e, id) => {
+  showModal = (e, id, isUpdate) => {
     this.setState({
       visible: true,
-      modelId: id
+      modelId: id,
+      isUpdate
     });
   }
 
@@ -142,10 +146,15 @@ class Student extends React.Component {
 
   // modal ok
   handleOk = (e) => {
-    this.setState({
-      visible: false,
+    const {form} = this.props;
+    form.validateFields({ force: true }, (err, values) => {
+      if (!err) {
+        this.setState({
+          visible: false,
+        });
+        this.updateStudentUser();
+      }
     });
-    this.updateStudentUser();
   }
 
   // modal取消
@@ -161,8 +170,8 @@ class Student extends React.Component {
   handleSearch = e => {
     e.preventDefault();
     const { dispatch, form } = this.props;
-    const stu_name = form.getFieldValue('name');
-    const class_grade = form.getFieldValue('classGrade');
+    const stu_name = form.getFieldValue('name') || undefined;
+    const class_grade = form.getFieldValue('classGrade') || undefined;
     dispatch({
       type: 'student/fetchStudentData',
       payload: {
@@ -175,8 +184,8 @@ class Student extends React.Component {
   // 删除学生用户
   deleteSystemUser = (e, id) => {
     const { dispatch, form } = this.props;
-    const stu_name = form.getFieldValue('name');
-    const class_grade = form.getFieldValue('classGrade');
+    const stu_name = form.getFieldValue('name') || undefined;
+    const class_grade = form.getFieldValue('classGrade') || undefined;
     dispatch({
       type: 'student/deleteStudentUser',
       payload: {
@@ -191,12 +200,12 @@ class Student extends React.Component {
   updateStudentUser = () => {
     const { modelId } = this.state;
     const { dispatch, form } = this.props;
-    const stu_name = form.getFieldValue('modalName');
-    const academy = form.getFieldValue('modalAcademy');
-    const class_grade = form.getFieldValue('modalClassGrade');
-    const stu_num = form.getFieldValue('modalStuNumber');
-    const selectName = form.getFieldValue('name');
-    const selectClassGrade = form.getFieldValue('classGrade');
+    const stu_name = form.getFieldValue('modalName') || undefined;
+    const academy = form.getFieldValue('modalAcademy') || undefined;
+    const class_grade = form.getFieldValue('modalClassGrade') || undefined;
+    const stu_num = form.getFieldValue('modalStuNumber') || undefined;
+    const selectName = form.getFieldValue('name') || undefined;
+    const selectClassGrade = form.getFieldValue('classGrade') || undefined;
     if (modelId) {
       dispatch({
         type: 'student/updateStudentUser',
@@ -263,7 +272,7 @@ class Student extends React.Component {
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={4} sm={12}>
-            <Button icon="plus" type="primary" style={{ marginBottom: 36 }} onClick={(e) => this.showModal(e, null)}>
+            <Button icon="plus" type="primary" style={{ marginBottom: 36 }} onClick={(e) => this.showModal(e, null, false)}>
               新建学生
             </Button>
           </Col>
@@ -287,7 +296,7 @@ class Student extends React.Component {
     const {
       form: { getFieldDecorator },
     } = this.props;
-    const { visible } =this.state
+    const { visible } = this.state
     return (
       <Modal
         title="基本信息"
@@ -296,25 +305,76 @@ class Student extends React.Component {
         onCancel={this.handleCancel}
       >
         <Form layout="inline" style={{ display: 'flex' }}>
-          <FormItem label="姓名">
-            {getFieldDecorator('modalName')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="学院">
-            {getFieldDecorator('modalAcademy')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="班级">
-            {getFieldDecorator('modalClassGrade')(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem label="学号">
-            {getFieldDecorator('modalStuNumber')(<Input placeholder="请输入" />)}
-          </FormItem>
+          {this.state.isUpdate ?
+            <>
+              <FormItem label="姓名">
+                {getFieldDecorator('modalName',{required:false})(<Input placeholder="请输入" />)}
+              </FormItem>
+              <FormItem label="学院">
+                {getFieldDecorator('modalAcademy')(<Input placeholder="请输入" />)}
+              </FormItem>
+              <FormItem label="班级">
+                {getFieldDecorator('modalClassGrade')(<Input placeholder="请输入" />)}
+              </FormItem>
+              <FormItem label="学号">
+                {getFieldDecorator('modalStuNumber')(<InputNumber placeholder="请输入" />)}
+              </FormItem>
+            </>
+            :
+            <>
+              <FormItem label="姓名">
+                {getFieldDecorator('modalName', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.required' }),
+                    },
+                  ],
+                })(<Input placeholder="请输入" />)}
+              </FormItem>
+              <FormItem label="学院">
+                {getFieldDecorator('modalAcademy', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.required' }),
+                    },
+                  ],
+                })(<Input placeholder="请输入" />)}
+              </FormItem>
+              <FormItem label="班级">
+                {getFieldDecorator('modalClassGrade', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.required' }),
+                    },
+                  ],
+                })(<Input placeholder="请输入" />)}
+              </FormItem>
+              <FormItem label="学号">
+                {getFieldDecorator('modalStuNumber', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage({ id: 'validation.required' }),
+                    },
+                    {
+                      type: 'number',
+                      message: formatMessage({ id: 'validation.number.required' }),
+                    },
+                  ],
+                })(<InputNumber  placeholder="请输入" />)}
+              </FormItem>
+            </>}
+
         </Form>
       </Modal>
     )
   }
 
   renderExcelModel() {
-    const { uploading, fileList,excelVisible } = this.state;
+    const { uploading, fileList, excelVisible } = this.state;
     const uploadProps = {
       onRemove: (file) => {
         this.setState((state) => {

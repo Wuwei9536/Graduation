@@ -37,4 +37,10 @@ export default {
   'validation.date.required': '请选择起止日期',
   'validation.goal.required': '请输入目标描述',
   'validation.standard.required': '请输入衡量标准',
+
+  // 
+  'app.login.email': '邮箱',
+  'validation.name.required': '请输入姓名',
+  'validation.required': '不可为空',
+  'validation.number.required': '请输入数字',
 };

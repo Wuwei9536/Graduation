@@ -135,7 +135,10 @@ export async function getCurrentUser(params) {
 
 // 获取设备
 export async function fetchEquipmentData(params) {
-  return request(`/api/getequipment?${stringify(params)}`);
+  return request('/api/getequipment', {
+    method: 'POST',
+    data: params,
+  });
 }
 
 // 获取cpu
@@ -230,6 +233,14 @@ export async function deleteEquipment(params) {
 // 更新设备
 export async function updateEquipment(params) {
   return request('/api/updateequipment', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+// 发送注册邮件
+export async function sendRegisterEmail(params){
+  return request('/api/registeremail', {
     method: 'POST',
     data: params,
   });

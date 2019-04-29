@@ -42,8 +42,8 @@ export default {
       yield put({
         type: 'fetchStudentData',
         payload:{
-          selectName:payload.selectName,
-          selectClassGrade:payload.selectClassGrade
+          stu_name:payload.selectName,
+          class_grade:payload.selectClassGrade
         }
       })
     },
@@ -57,8 +57,8 @@ export default {
       yield put({
         type: 'fetchStudentData',
         payload:{
-          selectName:payload.selectName,
-          selectClassGrade:payload.selectClassGrade
+          stu_name:payload.selectName,
+          class_grade:payload.selectClassGrade
         }
       })
     },

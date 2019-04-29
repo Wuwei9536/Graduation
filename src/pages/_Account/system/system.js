@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import {
   Row,
   Col,
@@ -29,7 +30,6 @@ const columns = (deleteSystemUser, showModal) => [{
   dataIndex: 'name',
   key: 'name',
   align: 'center',
-  render: text => <a href="">{text}</a>,
 }, {
   title: '主目录',
   dataIndex: 'catalogue',
@@ -56,9 +56,9 @@ const columns = (deleteSystemUser, showModal) => [{
   align: 'center',
   render: (text, record) => (
     <span>
-      <a href="" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
+      <a href="javascript:;" onClick={(e) => deleteSystemUser(e, record.key)}>删除</a>
       <Divider type="vertical" />
-      <a href="" onClick={(e) => showModal(e, record.key)}>修改</a>
+      <a href="javascript:;" onClick={(e) => showModal(e, record.key)}>修改</a>
     </span>
   ),
 }]
@@ -79,8 +79,8 @@ class System extends React.Component {
 
   componentDidMount() {
     const { dispatch, form } = this.props;
-    const name = form.getFieldValue('systemUserName');
-    const groupname = form.getFieldValue('groupName');
+    const name = form.getFieldValue('systemUserName')||undefined;
+    const groupname = form.getFieldValue('groupName')||undefined;
     dispatch({
       type: 'system/fetchSystemData',
       payload: {
@@ -93,8 +93,8 @@ class System extends React.Component {
   // 上传excel
   handleUpload = () => {
     const { fileList } = this.state;
-    const formData = new FormData(); 
-    fileList.forEach((file,index) => {
+    const formData = new FormData();
+    fileList.forEach((file, index) => {
       formData.append(index, file); // index为key值
     });
     this.setState({
@@ -122,7 +122,7 @@ class System extends React.Component {
     });
   }
 
-  
+
   // 修改
   showModal = (e, id) => {
     this.setState({
@@ -140,10 +140,15 @@ class System extends React.Component {
 
   // modal ok
   handleOk = (e) => {
-    this.setState({
-      visible: false,
+    const {form} = this.props;
+    form.validateFields({ force: true }, (err, values) => {
+      if (!err) {
+        this.setState({
+          visible: false,
+        });
+        this.updateSystemUser();
+      }
     });
-    this.updateSystemUser();
   }
 
   // modal取消
@@ -155,12 +160,11 @@ class System extends React.Component {
     });
   }
 
-  // 点击查询
+  // 点击查询  payload 参数为undefined时不会带过去，null会
   handleSearch = e => {
-    e.preventDefault();
     const { dispatch, form } = this.props;
-    const name = form.getFieldValue('systemUserName');
-    const groupname = form.getFieldValue('groupName');
+    const name = form.getFieldValue('systemUserName')||undefined;
+    const groupname = form.getFieldValue('groupName')||undefined;
     dispatch({
       type: 'system/fetchSystemData',
       payload: {
@@ -173,8 +177,8 @@ class System extends React.Component {
   // 删除系统用户
   deleteSystemUser = (e, id) => {
     const { dispatch, form } = this.props;
-    const name = form.getFieldValue('systemUserName');
-    const groupname = form.getFieldValue('groupName');
+    const name = form.getFieldValue('systemUserName')||undefined;
+    const groupname = form.getFieldValue('groupName')||undefined;
     dispatch({
       type: 'system/deleteSystemUser',
       payload: {
@@ -189,17 +193,19 @@ class System extends React.Component {
   updateSystemUser = () => {
     const { modelId } = this.state;
     const { dispatch, form } = this.props;
-    const name = form.getFieldValue('name');
-    const homedirectory = form.getFieldValue('homedirectory');
-    const groupname = form.getFieldValue('groupname');
-    const selectName = form.getFieldValue('systemUserName');
-    const selectGroupName =  form.getFieldValue('groupName');
+    const email = form.getFieldValue('email')||undefined;
+    const name = form.getFieldValue('name')||undefined;
+    const homedirectory = form.getFieldValue('homedirectory')||undefined;
+    const groupname = form.getFieldValue('groupname')||undefined;
+    const selectName = form.getFieldValue('systemUserName')||undefined;
+    const selectGroupName = form.getFieldValue('groupName')||undefined;
     if (modelId) {
       dispatch({
         type: 'system/updateSystemUser',
         payload: {
-          id:modelId,
+          id: modelId,
           name,
+          email,
           homedirectory,
           groupname,
           selectName,
@@ -211,6 +217,7 @@ class System extends React.Component {
         type: 'system/createSystemUser',
         payload: {
           name,
+          email,
           homedirectory,
           groupname,
           selectName,
@@ -221,8 +228,8 @@ class System extends React.Component {
   }
 
   // 下载excel
-  downloadExcel=(bool)=>{
-    window.open('/api/downloadexcel?needData='+bool)
+  downloadExcel = (bool) => {
+    window.open('/api/downloadexcel?needData=' + bool)
   }
 
   renderForm() {
@@ -230,7 +237,7 @@ class System extends React.Component {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={6} sm={18}>
             <FormItem label="姓名">
@@ -239,18 +246,12 @@ class System extends React.Component {
           </Col>
           <Col md={6} sm={18}>
             <FormItem label="用户组">
-              {getFieldDecorator('groupName')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">正常</Option>
-                  <Option value="1">警告</Option>
-                  <Option value="2">危险</Option>
-                </Select>
-              )}
+              {getFieldDecorator('groupName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={12} sm={36}>
             <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={this.handleSearch} >
                 查询
               </Button>
             </span>
@@ -282,7 +283,7 @@ class System extends React.Component {
     const {
       form: { getFieldDecorator },
     } = this.props;
-    const {visible}=this.state;
+    const { visible } = this.state;
     return (
       <Modal
         title="基本信息"
@@ -292,13 +293,44 @@ class System extends React.Component {
       >
         <Form layout="inline" style={{ display: 'flex' }}>
           <FormItem label="姓名">
-            {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+            {getFieldDecorator('name',{
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.required' }),
+                },
+              ],
+            })(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem label="邮箱">
+            {getFieldDecorator('email',{
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.required' }),
+                },
+              ],
+            })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem label="主目录">
-            {getFieldDecorator('homedirectory')(<Input placeholder="请输入" />)}
+            {getFieldDecorator('homedirectory',{
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.required' }),
+                },
+              ],
+            })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem label="用户组">
-            {getFieldDecorator('groupname')(<Input placeholder="请输入" />)}
+            {getFieldDecorator('groupname',{
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.required' }),
+                },
+              ],
+            })(<Input placeholder="请输入" />)}
           </FormItem>
         </Form>
       </Modal>
@@ -306,7 +338,7 @@ class System extends React.Component {
   }
 
   renderExcelModel() {
-    const { uploading, fileList,excelVisible } = this.state;
+    const { uploading, fileList, excelVisible } = this.state;
     const uploadProps = {
       onRemove: (file) => {
         this.setState((state) => {

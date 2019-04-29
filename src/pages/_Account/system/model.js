@@ -16,7 +16,6 @@ export default {
   effects: {
     *fetchSystemData({ payload }, { call, put }) {
       const response = yield call(fetchSystemData, payload);
-      console.log('%cresponse: ', 'font-size:15px;background-color: rgb(135, 208, 104);', response);
       yield put({
         type: 'setSystemData',
         payload: response
@@ -36,6 +35,7 @@ export default {
       yield call(updateSystemUser, {
         id:payload.id,
         name:payload.name,
+        email:payload.email,
         homedirectory:payload.homedirectory,
         groupname:payload.groupname,
       });
@@ -50,6 +50,7 @@ export default {
     *createSystemUser({ payload }, { call, put }) {
       yield call(createSystemUser, {
         name:payload.name,
+        email:payload.email,
         homedirectory:payload.homedirectory,
         groupname:payload.groupname
       });

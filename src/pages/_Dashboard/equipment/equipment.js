@@ -88,13 +88,13 @@ const columns = (deleteEquipment, showModal, navigate) => [{
   align: 'center',
   render: (cell, row) => (
     <span>
-      <a href="javascript:;" onClick={()=>navigate('/dashboard/cpu', row.key)}>cpu</a>
+      <a href="javascript:;" onClick={() => navigate('/dashboard/cpu', row.key)}>cpu</a>
       <Divider type="vertical" />
-      <a href="javascript:;" onClick={()=>navigate('/dashboard/storage', row.key)}>内存</a>
+      <a href="javascript:;" onClick={() => navigate('/dashboard/storage', row.key)}>内存</a>
       <Divider type="vertical" />
-      <a href="javascript:;" onClick={()=>navigate('/dashboard/disk', row.key)}>磁盘</a>
+      <a href="javascript:;" onClick={() => navigate('/dashboard/disk', row.key)}>磁盘</a>
       <Divider type="vertical" />
-      <a href="javascript:;" onClick={()=>navigate('/dashboard/software', row.key)}>软件</a>
+      <a href="javascript:;" onClick={() => navigate('/dashboard/software', row.key)}>软件</a>
     </span>
   ),
 }, {
@@ -214,14 +214,8 @@ class Equipment extends React.Component {
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">正常</Option>
-                  <Option value="1">警告</Option>
-                  <Option value="2">危险</Option>
-                </Select>
-              )}
+            <FormItem label="设备ip地址">
+              {getFieldDecorator('ip')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -229,7 +223,7 @@ class Equipment extends React.Component {
               <Button type="primary" htmlType="submit" onClick={this.fetchEquipmentData}>
                 查询
               </Button>
-              <Button icon="plus" type="primary" style={{ marginLeft: 18 }} onClick={() => this.showModal(true)}>
+              <Button icon="plus" type="primary" style={{ marginLeft: 18, marginBottom: 20}} onClick={() => this.showModal(true)}>
                 新建设备
               </Button>
             </span>
@@ -280,7 +274,7 @@ class Equipment extends React.Component {
             </FormItem>
             <FormItem label="是否安装agent">
               {getFieldDecorator('agent')(
-                <Select placeholder="请选择">
+                <Select placeholder="请选择" style={{width:100}}>
                   <Option value='1'>是</Option>
                   <Option value="0">否</Option>
                 </Select>
@@ -301,7 +295,7 @@ class Equipment extends React.Component {
         <div className={styles.tableList}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
         </div>
-        <Table columns={columns(this.deleteEquipment, this.showModal,this.navigate)} dataSource={data} />
+        <Table columns={columns(this.deleteEquipment, this.showModal, this.navigate)} dataSource={data} />
       </Card>
     );
   }
